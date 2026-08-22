@@ -1,0 +1,67 @@
+{
+  "test_id": "edb1c87e-3301-4a07-9722-ec72bec07802",
+  "project_id": "01M0N49XCX7Q1VXFTGZHKX4QAD",
+  "folder_id": "01M0N49Z7DY07VRW2RKNPZFP1F",
+  "org_id": "3286131",
+  "session_name": "buy_nvda",
+  "commit_id": "84067019-bd3b-494a-a452-6627a8cfee17",
+  "testcase_id": "01M0NH1G09EBZQ0P3VCFR75SA3",
+  "executions": [
+    {
+      "execution_id": "ab50c017-13e6-4301-b989-9d9f9b1e35ad",
+      "run_kind": "author",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-22T20:04:11.576Z"
+    },
+    {
+      "execution_id": "6e6db308-5af9-4d2e-9bd9-dbc86a695ee8",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-22T20:05:35.675Z"
+    },
+    {
+      "execution_id": "7027183f-6e02-437b-869b-3742f447c78b",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-22T20:06:07.857Z"
+    },
+    {
+      "execution_id": "0d3e1f09-03c2-48b6-b6bb-98acd42f7b47",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-22T20:06:43.821Z"
+    },
+    {
+      "execution_id": "7c7189ed-b1c1-43bf-bc37-2806ad2a4b48",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-22T20:07:19.830Z"
+    },
+    {
+      "execution_id": "9e7e2f83-c472-4f2a-8bfb-ad5af7e71dd2",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-22T20:07:55.059Z"
+    },
+    {
+      "execution_id": "ff6e4e87-ae83-414e-86fb-b587c2470231",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-22T20:08:22.303Z"
+    },
+    {
+      "execution_id": "9485b693-8e12-4436-ab87-baa906a1793c",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-22T20:08:44.343Z"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+ "tests": [
+  "tests/buy_nvda_test.md"
+ ],
+ "excluded": [],
+ "baseline": {
+  "tests/buy_nvda_test.md": {
+   "passed": true,
+   "failed": 0,
+   "total": 4,
+   "durationS": 11,
+   "healed": false,
+   "suspectGreen": false
+  }
+ },
+ "grid": [
+  {
+   "id": "spend-beyond-balance",
+   "describes": "You can buy shares with money you do not have.",
+   "caught": false,
+   "caughtBy": [],
+   "perTest": {
+    "tests/buy_nvda_test.md": {
+     "passed": true,
+     "failed": 0,
+     "total": 4,
+     "durationS": 20,
+     "healed": false,
+     "suspectGreen": false
+    }
+   }
+  },
+  {
+   "id": "sell-shares-not-held",
+   "describes": "You can sell shares you never owned.",
+   "caught": false,
+   "caughtBy": [],
+   "perTest": {
+    "tests/buy_nvda_test.md": {
+     "passed": true,
+     "failed": 0,
+     "total": 4,
+     "durationS": 21,
+     "healed": false,
+     "suspectGreen": false
+    }
+   }
+  },
+  {
+   "id": "total-ignores-quantity",
+   "describes": "A 100-share order is charged as one share.",
+   "caught": false,
+   "caughtBy": [],
+   "perTest": {
+    "tests/buy_nvda_test.md": {
+     "passed": true,
+     "failed": 0,
+     "total": 4,
+     "durationS": 25,
+     "healed": false,
+     "suspectGreen": false
+    }
+   }
+  },
+  {
+   "id": "negative-quantity-allowed",
+   "describes": "You can order minus fifty shares.",
+   "caught": false,
+   "caughtBy": [],
+   "perTest": {
+    "tests/buy_nvda_test.md": {
+     "passed": true,
+     "failed": 0,
+     "total": 4,
+     "durationS": 22,
+     "healed": false,
+     "suspectGreen": false
+    }
+   }
+  },
+  {
+   "id": "fractional-shares-allowed",
+   "describes": "You can order 2.5 shares of a whole-share instrument.",
+   "caught": false,
+   "caughtBy": [],
+   "perTest": {
+    "tests/buy_nvda_test.md": {
+     "passed": true,
+     "failed": 0,
+     "total": 4,
+     "durationS": 15,
+     "healed": false,
+     "suspectGreen": false
+    }
+   }
+  },
+  {
+   "id": "stale-price-accepted",
+   "describes": "Orders fill at a price that expired long ago.",
+   "caught": false,
+   "caughtBy": [],
+   "perTest": {
+    "tests/buy_nvda_test.md": {
+     "passed": true,
+     "failed": 0,
+     "total": 4,
+     "durationS": 11,
+     "healed": false,
+     "suspectGreen": false
+    }
+   }
+  }
+ ],
+ "score": {
+  "mutations": 6,
+  "caught": 0,
+  "survived": 6,
+  "alarmScore": 0
+ }
+}
