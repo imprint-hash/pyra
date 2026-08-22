@@ -1,0 +1,8 @@
+{
+  "name": "checkoutbench",
+  "version": "0.1.0",
+  "description": "Benchmark your checkout against real stores. Built on Kane CLI.",
+  "type": "module",
+  "bin": { "checkoutbench": "./src/cli.js" },
+  "license": "MIT"
+}
