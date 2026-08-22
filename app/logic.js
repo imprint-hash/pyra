@@ -1,59 +1,90 @@
 /**
- * Every rule the shop enforces, in one file.
+ * Every rule the broker enforces, in one file.
  *
  * The mutation engine rewrites this file and nothing else. Keeping the rules
  * here — rather than scattered through request handlers and templates — is
- * what makes a mutation a single honest edit ("this validation no longer
- * runs") instead of a shotgun blast through the app that would fail for
- * reasons nobody could attribute.
+ * what makes a mutation a single honest edit ("this check no longer runs")
+ * instead of a shotgun blast through the app that would fail for reasons
+ * nobody could attribute.
  *
- * Each exported function is a place a real shop has shipped a real bug.
+ * Each exported function guards a rule a real broker has failed to enforce:
+ * buying beyond your balance, selling shares you never held, an order total
+ * that forgets the quantity, a price accepted long after it expired.
+ *
+ * Prices are fixed rather than simulated. A test that has to allow for a
+ * moving market cannot say whether it went red because the app broke or
+ * because the number moved, and this whole project rests on that distinction.
  */
 
-export const CATALOGUE = [
-  { id: "kettle", name: "Stovetop Kettle", price: 3400, stock: 6 },
-  { id: "mug", name: "Speckled Mug", price: 1200, stock: 0 },
-  { id: "grinder", name: "Hand Grinder", price: 5800, stock: 3 },
+export const MARKET = [
+  { ticker: "NVDA", name: "Nvidia",   price: 84250 },
+  { ticker: "AAPL", name: "Apple",    price: 21980 },
+  { ticker: "TSLA", name: "Tesla",    price: 30140 },
 ];
+
+/** A quote is only good for a minute. */
+export const QUOTE_TTL_MS = 60_000;
 
 export const money = (pence) => `£${(pence / 100).toFixed(2)}`;
 
-export const findItem = (id) => CATALOGUE.find((p) => p.id === id) || null;
+export const findStock = (t) =>
+  MARKET.find((s) => s.ticker === String(t || "").toUpperCase()) || null;
 
-/** Out-of-stock items must not reach the basket. */
-export function canAddToCart(item, quantity) {
-  if (!item) return { ok: false, reason: "No such product." };
-  if (item.stock <= 0) return { ok: false, reason: "Out of stock." };
-  if (quantity < 1) return { ok: false, reason: "Quantity must be at least 1." };
-  if (quantity > item.stock) return { ok: false, reason: `Only ${item.stock} left.` };
-  return { ok: true };
+/** Whole, positive share counts only. */
+export function validateQuantity(raw) {
+  const n = Number(raw);
+  if (!Number.isInteger(n)) return { ok: false, reason: "Quantity must be a whole number." };
+  if (n <= 0) return { ok: false, reason: "Quantity must be at least 1." };
+  return { ok: true, quantity: n };
 }
 
-/** Line totals and the order total. */
-export function cartTotal(lines) {
-  return lines.reduce((sum, l) => sum + l.price * l.quantity, 0);
+/** What the order costs. */
+export function orderTotal(price, quantity) {
+  return price * quantity;
 }
 
-/** SAVE10 takes 10% off. Anything else is rejected, loudly. */
-export function applyDiscount(total, code) {
-  if (!code) return { total, applied: false, message: "" };
-  if (code.trim().toUpperCase() === "SAVE10") {
-    return { total: Math.round(total * 0.9), applied: true, message: "SAVE10 applied — 10% off." };
-  }
-  return { total, applied: false, message: "That code is not valid." };
+/** You cannot spend money you do not have. */
+export function canAfford(cashPence, totalPence) {
+  return totalPence <= cashPence;
 }
 
-/** The checkout form's rules. */
-export function validateCheckout({ name, email, card }) {
+/** You cannot sell shares you do not hold. */
+export function canSell(holdings, ticker, quantity) {
+  const held = holdings[ticker] || 0;
+  return quantity <= held;
+}
+
+/** A price older than the quote window must not be traded on. */
+export function isQuoteFresh(quotedAt, now = Date.now()) {
+  return now - quotedAt <= QUOTE_TTL_MS;
+}
+
+/**
+ * The whole order, checked in one place.
+ * Returns the reasons a shopper would be shown, not codes.
+ */
+export function validateOrder({ side, stock, quantity, cashPence, holdings, quotedAt, now }) {
   const errors = {};
-  if (!name || name.trim().length < 2) errors.name = "Enter your name.";
-  if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) errors.email = "Enter a valid email address.";
-  const digits = (card || "").replace(/\s/g, "");
-  if (!/^\d{16}$/.test(digits)) errors.card = "Card number must be 16 digits.";
-  return { ok: Object.keys(errors).length === 0, errors };
-}
 
-/** An empty basket cannot be ordered. */
-export function canPlaceOrder(lines) {
-  return Array.isArray(lines) && lines.length > 0;
+  if (side !== "buy" && side !== "sell") errors.side = "Choose buy or sell.";
+  if (!stock) errors.ticker = "No such stock.";
+
+  const q = validateQuantity(quantity);
+  if (!q.ok) errors.quantity = q.reason;
+
+  if (!errors.ticker && !errors.quantity) {
+    const total = orderTotal(stock.price, q.quantity);
+
+    if (!isQuoteFresh(quotedAt, now)) {
+      errors.quote = "That price has expired. Refresh and try again.";
+    }
+    if (side === "buy" && !canAfford(cashPence, total)) {
+      errors.cash = `Not enough cash. This order costs ${money(total)}.`;
+    }
+    if (side === "sell" && !canSell(holdings, stock.ticker, q.quantity)) {
+      errors.holdings = `You only hold ${holdings[stock.ticker] || 0} ${stock.ticker}.`;
+    }
+  }
+
+  return { ok: Object.keys(errors).length === 0, errors };
 }

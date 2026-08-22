@@ -1,136 +1,123 @@
 /**
- * The shop under test.
+ * The broker under test.
  *
  * Deliberately boring plumbing: no dependencies, no build step, one command to
  * run. The interesting file is logic.js — this one only renders what those
- * rules decide, so a mutation shows up as changed behaviour in the browser
+ * rules decide, so a mutation shows up as changed behaviour in a browser
  * rather than as a crash.
  *
  *   node app/server.js          → http://localhost:4321
  *
- * The basket lives in memory, keyed by a cookie, because a database would add
- * a second thing that can break and prove nothing about the idea.
+ * Accounts live in memory, keyed by a cookie. A database would add a second
+ * thing that can break and would prove nothing about the idea.
  */
 
 import http from "node:http";
-import { CATALOGUE, findItem, money, canAddToCart, cartTotal,
-         applyDiscount, validateCheckout, canPlaceOrder } from "./logic.js";
+import { MARKET, findStock, money, orderTotal, validateOrder } from "./logic.js";
 
 const PORT = Number(process.env.PORT || 4321);
-const baskets = new Map();
+const OPENING_CASH = 5_000_00;
+const accounts = new Map();
 
-const esc = (s) => String(s).replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
+const esc = (s) => String(s).replace(/[<>&"]/g, (c) =>
+  ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
+
+function account(id) {
+  if (!accounts.has(id)) accounts.set(id, { cash: OPENING_CASH, holdings: {} });
+  return accounts.get(id);
+}
 
 function page(title, body) {
   return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(title)} · Kettle &amp; Co</title>
+<title>${esc(title)} · Bellweather</title>
 <style>
- :root{--ink:#1b1a24;--paper:#faf8f5;--line:#e0dcd4;--accent:#1f6f5c;--bad:#b3261e}
- @media(prefers-color-scheme:dark){:root{--ink:#f0eee9;--paper:#16151c;--line:#33313d;--accent:#4fbf9f;--bad:#ff8a80}}
+ :root{--ink:#12141a;--paper:#f7f7f4;--line:#dcdcd6;--up:#0b7a54;--down:#b3261e;--accent:#1b4dd8}
+ @media(prefers-color-scheme:dark){:root{--ink:#eceef2;--paper:#101218;--line:#2a2e39;--up:#37c58c;--down:#ff8a80;--accent:#7d9bff}}
  *{box-sizing:border-box}
  body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 ui-sans-serif,system-ui,sans-serif}
- .wrap{max-width:760px;margin:0 auto;padding:28px 20px 64px}
- header{display:flex;gap:18px;align-items:baseline;border-bottom:2px solid var(--line);padding-bottom:14px;margin-bottom:26px}
- h1{font-size:20px;margin:0}
+ .wrap{max-width:780px;margin:0 auto;padding:26px 20px 64px}
+ header{display:flex;gap:20px;align-items:baseline;justify-content:space-between;
+   border-bottom:2px solid var(--line);padding-bottom:14px;margin-bottom:24px}
+ h1{font-size:19px;margin:0;letter-spacing:-.01em}
  a{color:var(--accent)}
- .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
- .card{border:1px solid var(--line);border-radius:12px;padding:16px;background:transparent}
- .price{font-weight:600;font-variant-numeric:tabular-nums}
- button,.btn{font:inherit;font-weight:600;padding:10px 16px;border-radius:9px;border:1px solid var(--accent);
-   background:var(--accent);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
- button[disabled]{opacity:.45;cursor:not-allowed}
- input{font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:9px;width:100%;
+ .num{font-variant-numeric:tabular-nums}
+ table{width:100%;border-collapse:collapse}
+ td,th{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
+ th{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:#7d7d86}
+ button{font:inherit;font-weight:600;padding:10px 18px;border-radius:9px;border:1px solid var(--accent);
+   background:var(--accent);color:#fff;cursor:pointer}
+ button.sell{background:transparent;color:var(--accent)}
+ input,select{font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:9px;
    background:var(--paper);color:var(--ink)}
  label{display:block;margin:12px 0 4px;font-weight:600;font-size:14px}
- .err{color:var(--bad);font-size:14px;margin-top:4px}
- .note{border-left:3px solid var(--accent);padding-left:12px;margin:16px 0}
- table{width:100%;border-collapse:collapse}
- td,th{text-align:left;padding:9px 6px;border-bottom:1px solid var(--line)}
- .total{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
- .soldout{color:var(--bad);font-size:14px;font-weight:600}
+ .err{color:var(--down);font-size:14px;margin-top:6px;font-weight:600}
+ .ok{color:var(--up);font-weight:700}
+ .cash{font-size:22px;font-weight:700}
 </style></head><body><div class="wrap">
-<header><h1><a href="/" style="text-decoration:none;color:inherit">Kettle &amp; Co</a></h1>
-<a href="/cart" id="cart-link">Basket</a></header>
+<header><h1><a href="/" style="text-decoration:none;color:inherit">Bellweather</a></h1>
+<a href="/portfolio" id="portfolio-link">Portfolio</a></header>
 ${body}</div></body></html>`;
 }
 
-const lines = (id) => baskets.get(id) || [];
-
-function home() {
-  const cards = CATALOGUE.map((p) => `
-    <div class="card">
-      <h2 style="font-size:17px;margin:0 0 6px">${esc(p.name)}</h2>
-      <p class="price">${money(p.price)}</p>
-      ${p.stock > 0
-        ? `<p style="font-size:14px;color:#7a7a7a">${p.stock} in stock</p>`
-        : `<p class="soldout">Out of stock</p>`}
-      <a class="btn" href="/product/${p.id}">View</a>
-    </div>`).join("");
-  return page("Home", `<div class="grid">${cards}</div>`);
+function market() {
+  const rows = MARKET.map((s) => `<tr>
+      <td><a href="/trade/${s.ticker}" id="link-${s.ticker}">${s.ticker}</a></td>
+      <td>${esc(s.name)}</td>
+      <td class="num">${money(s.price)}</td>
+    </tr>`).join("");
+  return page("Market", `<h2>Market</h2>
+    <table><thead><tr><th>Ticker</th><th>Name</th><th>Price</th></tr></thead>
+    <tbody>${rows}</tbody></table>`);
 }
 
-function product(id, message = "") {
-  const p = findItem(id);
-  if (!p) return null;
-  const disabled = p.stock <= 0 ? "disabled" : "";
-  return page(p.name, `
-    <h2>${esc(p.name)}</h2>
-    <p class="price" id="price">${money(p.price)}</p>
-    ${p.stock > 0 ? `<p>${p.stock} in stock</p>` : `<p class="soldout" id="stock">Out of stock</p>`}
-    ${message ? `<p class="err" id="message">${esc(message)}</p>` : ""}
-    <form method="POST" action="/add">
-      <input type="hidden" name="id" value="${esc(p.id)}">
-      <label for="qty">Quantity</label>
-      <input id="qty" name="qty" value="1" inputmode="numeric" style="max-width:110px">
-      <p><button type="submit" id="add-to-basket" ${disabled}>Add to basket</button></p>
+function tradePage(id, ticker, { errors = {}, values = {}, done = "" } = {}) {
+  const s = findStock(ticker);
+  if (!s) return null;
+  const acct = account(id);
+  const held = acct.holdings[s.ticker] || 0;
+  const quotedAt = Date.now();
+
+  const errorFor = (k) => errors[k] ? `<p class="err" id="err-${k}">${esc(errors[k])}</p>` : "";
+
+  return page(`Trade ${s.ticker}`, `
+    <h2>${esc(s.name)} <span class="num">(${s.ticker})</span></h2>
+    <p class="num" id="price">Price: ${money(s.price)}</p>
+    <p class="num" id="cash">Cash: ${money(acct.cash)}</p>
+    <p class="num" id="held">You hold: ${held} ${s.ticker}</p>
+    ${done ? `<p class="ok" id="confirmation">${esc(done)}</p>` : ""}
+    ${errorFor("quote")}${errorFor("cash")}${errorFor("holdings")}${errorFor("side")}
+    <form method="POST" action="/order">
+      <input type="hidden" name="ticker" value="${s.ticker}">
+      <input type="hidden" name="quotedAt" value="${quotedAt}">
+      <label for="quantity">Number of shares</label>
+      <input id="quantity" name="quantity" value="${esc(values.quantity ?? "1")}" inputmode="numeric" style="max-width:130px">
+      ${errorFor("quantity")}
+      <p style="display:flex;gap:10px;margin-top:16px">
+        <button type="submit" name="side" value="buy" id="buy">Buy</button>
+        <button type="submit" name="side" value="sell" id="sell" class="sell">Sell</button>
+      </p>
     </form>
-    <p><a href="/">Back to shop</a></p>`);
+    <p><a href="/">Back to market</a></p>`);
 }
 
-function cart(id, discountMsg = "", code = "") {
-  const ls = lines(id);
-  if (!ls.length) {
-    return page("Basket", `<h2>Basket</h2><p id="empty">Your basket is empty.</p>
-      <p><a href="/">Back to shop</a></p>`);
-  }
-  const raw = cartTotal(ls);
-  const { total, message } = applyDiscount(raw, code);
-  const rows = ls.map((l) => `<tr><td>${esc(l.name)}</td><td>${l.quantity}</td>
-      <td class="price">${money(l.price * l.quantity)}</td></tr>`).join("");
-  return page("Basket", `
-    <h2>Basket</h2>
-    <table><thead><tr><th>Item</th><th>Qty</th><th>Price</th></tr></thead><tbody>${rows}</tbody></table>
-    <p class="total" id="total">Total: ${money(total)}</p>
-    ${message || discountMsg ? `<p class="err" id="discount-message">${esc(message || discountMsg)}</p>` : ""}
-    <form method="POST" action="/discount">
-      <label for="code">Discount code</label>
-      <input id="code" name="code" value="${esc(code)}" style="max-width:200px">
-      <p><button type="submit" id="apply-code">Apply code</button></p>
-    </form>
-    <p><a class="btn" href="/checkout" id="checkout-link">Checkout</a></p>`);
-}
-
-function checkout(id, errors = {}, values = {}) {
-  const ls = lines(id);
-  if (!canPlaceOrder(ls)) {
-    return page("Checkout", `<h2>Checkout</h2>
-      <p class="err" id="blocked">Your basket is empty, so there is nothing to order.</p>
-      <p><a href="/">Back to shop</a></p>`);
-  }
-  const field = (name, label, type = "text") => `
-    <label for="${name}">${label}</label>
-    <input id="${name}" name="${name}" type="${type}" value="${esc(values[name] || "")}">
-    ${errors[name] ? `<p class="err" id="err-${name}">${esc(errors[name])}</p>` : ""}`;
-  return page("Checkout", `
-    <h2>Checkout</h2>
-    <p class="total">Total: ${money(cartTotal(ls))}</p>
-    <form method="POST" action="/place-order">
-      ${field("name", "Full name")}
-      ${field("email", "Email address", "email")}
-      ${field("card", "Card number")}
-      <p><button type="submit" id="place-order">Place order</button></p>
-    </form>`);
+function portfolio(id) {
+  const acct = account(id);
+  const held = Object.entries(acct.holdings).filter(([, q]) => q > 0);
+  const rows = held.length
+    ? held.map(([t, q]) => {
+        const s = findStock(t);
+        return `<tr><td>${t}</td><td class="num">${q}</td>
+          <td class="num">${money(orderTotal(s.price, q))}</td></tr>`;
+      }).join("")
+    : `<tr><td colspan="3" id="no-holdings">You hold no shares.</td></tr>`;
+  const value = held.reduce((sum, [t, q]) => sum + orderTotal(findStock(t).price, q), 0);
+  return page("Portfolio", `<h2>Portfolio</h2>
+    <p class="cash num" id="cash">Cash: ${money(acct.cash)}</p>
+    <table><thead><tr><th>Ticker</th><th>Shares</th><th>Value</th></tr></thead>
+    <tbody>${rows}</tbody></table>
+    <p class="num" id="total-value">Holdings value: ${money(value)}</p>
+    <p><a href="/">Back to market</a></p>`);
 }
 
 function readBody(req) {
@@ -156,58 +143,57 @@ const send = (res, html, code = 200) => {
   res.writeHead(code, { "content-type": "text/html; charset=utf-8" });
   res.end(html);
 };
-const redirect = (res, to) => { res.writeHead(303, { location: to }); res.end(); };
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   const sid = sessionOf(req, res);
   const path = url.pathname;
 
-  if (req.method === "GET" && path === "/") return send(res, home());
+  if (req.method === "GET" && path === "/") return send(res, market());
+  if (req.method === "GET" && path === "/portfolio") return send(res, portfolio(sid));
 
-  if (req.method === "GET" && path.startsWith("/product/")) {
-    const html = product(path.split("/")[2], url.searchParams.get("m") || "");
-    return html ? send(res, html) : send(res, page("Not found", "<p>No such product.</p>"), 404);
+  if (req.method === "GET" && path.startsWith("/trade/")) {
+    const html = tradePage(sid, path.split("/")[2]);
+    return html ? send(res, html) : send(res, page("Not found", "<p>No such stock.</p>"), 404);
   }
 
-  if (req.method === "POST" && path === "/add") {
+  if (req.method === "POST" && path === "/order") {
     const form = await readBody(req);
-    const item = findItem(form.id);
-    const qty = Number.parseInt(form.qty, 10);
-    const verdict = canAddToCart(item, Number.isNaN(qty) ? 0 : qty);
-    if (!verdict.ok) {
-      return redirect(res, `/product/${form.id}?m=${encodeURIComponent(verdict.reason)}`);
+    const stock = findStock(form.ticker);
+    const acct = account(sid);
+
+    const check = validateOrder({
+      side: form.side,
+      stock,
+      quantity: form.quantity,
+      cashPence: acct.cash,
+      holdings: acct.holdings,
+      quotedAt: Number(form.quotedAt) || 0,
+      now: Date.now(),
+    });
+
+    if (!check.ok) {
+      const html = tradePage(sid, form.ticker, { errors: check.errors, values: form });
+      return html ? send(res, html) : send(res, page("Not found", "<p>No such stock.</p>"), 404);
     }
-    const ls = lines(sid);
-    const existing = ls.find((l) => l.id === item.id);
-    if (existing) existing.quantity += qty;
-    else ls.push({ id: item.id, name: item.name, price: item.price, quantity: qty });
-    baskets.set(sid, ls);
-    return redirect(res, "/cart");
-  }
 
-  if (req.method === "GET" && path === "/cart") return send(res, cart(sid));
+    const qty = Number(form.quantity);
+    const total = orderTotal(stock.price, qty);
+    if (form.side === "buy") {
+      acct.cash -= total;
+      acct.holdings[stock.ticker] = (acct.holdings[stock.ticker] || 0) + qty;
+    } else {
+      acct.cash += total;
+      acct.holdings[stock.ticker] = (acct.holdings[stock.ticker] || 0) - qty;
+    }
 
-  if (req.method === "POST" && path === "/discount") {
-    const form = await readBody(req);
-    return send(res, cart(sid, "", form.code || ""));
-  }
-
-  if (req.method === "GET" && path === "/checkout") return send(res, checkout(sid));
-
-  if (req.method === "POST" && path === "/place-order") {
-    const form = await readBody(req);
-    if (!canPlaceOrder(lines(sid))) return send(res, checkout(sid));
-    const { ok, errors } = validateCheckout(form);
-    if (!ok) return send(res, checkout(sid, errors, form));
-    baskets.delete(sid);
-    return send(res, page("Order placed", `
-      <h2 id="confirmation">Thank you — your order is placed.</h2>
-      <p>We have emailed a receipt to ${esc(form.email)}.</p>
-      <p><a href="/">Back to shop</a></p>`));
+    const verb = form.side === "buy" ? "Bought" : "Sold";
+    return send(res, tradePage(sid, form.ticker, {
+      done: `${verb} ${qty} ${stock.ticker} for ${money(total)}.`,
+    }));
   }
 
   send(res, page("Not found", "<p>Page not found.</p>"), 404);
 });
 
-server.listen(PORT, () => console.log(`Kettle & Co on http://localhost:${PORT}`));
+server.listen(PORT, () => console.log(`Bellweather on http://localhost:${PORT}`));

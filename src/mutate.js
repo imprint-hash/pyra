@@ -5,52 +5,60 @@
  * closely, or it may be asleep. The only way to find out is to break the app
  * on purpose and see whether the suite notices.
  *
- * Each mutation below is a bug someone has actually shipped: a validation that
- * stopped running, a total that lost its multiplier, a stock check that let
- * an out-of-stock item through. If a flow still passes with one of these
- * applied, that flow is decoration.
+ * Each mutation below is a failure a real broker has shipped: a balance check
+ * that stopped running, a total that lost its multiplier, a short-sale guard
+ * that let you sell shares you never held. If a flow still passes with one of
+ * these applied, that flow is decoration.
  *
- * Mutations rewrite app/logic.js only, and are always reverted — see apply().
+ * Mutations rewrite app/logic.js only, and are always reverted — see
+ * withMutation().
  */
 
 import { readFile, writeFile } from "node:fs/promises";
 
 export const MUTATIONS = [
   {
-    id: "email-validation-off",
-    describes: "Checkout accepts any email address, even 'nonsense'.",
-    find: `if (!email || !/^[^@\\s]+@[^@\\s]+\\.[^@\\s]{2,}$/.test(email)) errors.email = "Enter a valid email address.";`,
-    replace: `// mutated: email validation removed`,
+    id: "spend-beyond-balance",
+    describes: "You can buy shares with money you do not have.",
+    severity: "critical",
+    find: `  return totalPence <= cashPence;`,
+    replace: `  return true; // mutated: balance check removed`,
+  },
+  {
+    id: "sell-shares-not-held",
+    describes: "You can sell shares you never owned.",
+    severity: "critical",
+    find: `  const held = holdings[ticker] || 0;
+  return quantity <= held;`,
+    replace: `  return true; // mutated: holdings check removed`,
   },
   {
     id: "total-ignores-quantity",
-    describes: "Basket total charges for one of everything, whatever the quantity.",
-    find: `return lines.reduce((sum, l) => sum + l.price * l.quantity, 0);`,
-    replace: `return lines.reduce((sum, l) => sum + l.price, 0); // mutated: quantity dropped`,
+    describes: "A 100-share order is charged as one share.",
+    severity: "critical",
+    find: `  return price * quantity;`,
+    replace: `  return price; // mutated: quantity dropped from the total`,
   },
   {
-    id: "out-of-stock-sellable",
-    describes: "Out-of-stock items can be added to the basket.",
-    find: `if (item.stock <= 0) return { ok: false, reason: "Out of stock." };`,
-    replace: `// mutated: stock check removed`,
+    id: "negative-quantity-allowed",
+    describes: "You can order minus fifty shares.",
+    severity: "major",
+    find: `  if (n <= 0) return { ok: false, reason: "Quantity must be at least 1." };`,
+    replace: `  // mutated: positive-quantity check removed`,
   },
   {
-    id: "any-code-discounts",
-    describes: "Every discount code works, not just SAVE10.",
-    find: `if (code.trim().toUpperCase() === "SAVE10") {`,
-    replace: `if (true) { // mutated: any code accepted`,
+    id: "fractional-shares-allowed",
+    describes: "You can order 2.5 shares of a whole-share instrument.",
+    severity: "minor",
+    find: `  if (!Number.isInteger(n)) return { ok: false, reason: "Quantity must be a whole number." };`,
+    replace: `  if (Number.isNaN(n)) return { ok: false, reason: "Quantity must be a whole number." }; // mutated`,
   },
   {
-    id: "card-length-unchecked",
-    describes: "A two-digit card number is accepted as valid.",
-    find: `if (!/^\\d{16}$/.test(digits)) errors.card = "Card number must be 16 digits.";`,
-    replace: `if (!/^\\d{2,}$/.test(digits)) errors.card = "Card number must be 16 digits."; // mutated`,
-  },
-  {
-    id: "empty-basket-orderable",
-    describes: "An empty basket can be ordered.",
-    find: `return Array.isArray(lines) && lines.length > 0;`,
-    replace: `return true; // mutated: empty-basket guard removed`,
+    id: "stale-price-accepted",
+    describes: "Orders fill at a price that expired long ago.",
+    severity: "major",
+    find: `  return now - quotedAt <= QUOTE_TTL_MS;`,
+    replace: `  return true; // mutated: quote expiry ignored`,
   },
 ];
 
@@ -59,7 +67,7 @@ export const MUTATIONS = [
  *
  * The restore lives in `finally` because a crash mid-sweep that left a
  * mutation on disk would silently poison every later result — and worse,
- * would leave the developer's own shop broken.
+ * would leave the developer's own app broken.
  */
 export async function withMutation(logicPath, mutation, fn) {
   const original = await readFile(logicPath, "utf8");
@@ -85,6 +93,7 @@ export async function checkAll(logicPath) {
   return MUTATIONS.map((m) => ({
     id: m.id,
     applies: src.includes(m.find),
+    severity: m.severity,
     describes: m.describes,
   }));
 }
