@@ -138,6 +138,35 @@ function isChromeErrorPage(dom, url) {
   return /id="main-frame-error"|ERR_[A-Z_]{4,}|Checking the proxy and the firewall/.test(dom);
 }
 
+/**
+ * A single product page to start the journey from.
+ *
+ * A category grid shows twenty identical "Add to basket" buttons, and Kane
+ * picks between them by description — so it thrashes between targets and
+ * never reaches the cart. That is not a fault in the shop, it is ambiguity we
+ * created by pointing it at a list. Choosing one product first removes the
+ * choice, and costs nothing because we are reading, not acting.
+ */
+export function pickProductUrl(links, baseUrl) {
+  const junk = /\b(login|register|account|basket|cart|checkout|about|contact|blog|terms|privacy|help|home)\b/i;
+  const productish = /(\/product|\/products\/|\/item|\/p\/|_\d+\/index|\/dp\/|\/shop\/)/i;
+
+  const candidates = links
+    .filter((l) => l.href && !l.href.startsWith("#") && !junk.test(l.text))
+    .map((l) => { try { return { ...l, abs: new URL(l.href, baseUrl).href }; } catch { return null; } })
+    .filter(Boolean)
+    .filter((l) => new URL(l.abs).host === new URL(baseUrl).host);
+
+  // A path that looks like a product beats one that merely has wordy link text.
+  const strong = candidates.find((l) => productish.test(l.abs));
+  if (strong) return strong.abs;
+
+  // Otherwise the longest link text is usually the product name in a card.
+  const byText = candidates.filter((l) => l.text.length > 12)
+                           .sort((a, b) => b.text.length - a.text.length)[0];
+  return byText?.abs || null;
+}
+
 export async function recon(url) {
   const dom = await dumpDom(url);
 
@@ -147,12 +176,28 @@ export async function recon(url) {
   }
 
   const controls = findControls(dom);
+
+  // Read the chosen product page too, so the journey starts somewhere with
+  // exactly one "add to basket" on it and Kane has nothing to disambiguate.
+  const productUrl = pickProductUrl(controls.links, url);
+  let entry = url, entryControls = controls;
+  if (productUrl && productUrl !== url) {
+    try {
+      const pdom = await dumpDom(productUrl);
+      if (!isChromeErrorPage(pdom, productUrl)) {
+        const pc = findControls(pdom);
+        if (detectStages(pc).product) { entry = productUrl; entryControls = pc; }
+      }
+    } catch { /* the landing page remains a workable entry */ }
+  }
+
   return {
     url,
+    entry,
     reachable: true,
     bytes: dom.length,
     title: (dom.match(/<title[^>]*>(.*?)<\/title>/is)?.[1] || "").trim(),
-    ...controls,
-    stages: detectStages(controls),
+    ...entryControls,
+    stages: detectStages(entryControls),
   };
 }
