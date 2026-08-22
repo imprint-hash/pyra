@@ -56,13 +56,24 @@ Current test file:
 Return the complete new test file and nothing else. No commentary, no fences.`;
 
 /**
- * Ask Claude Code to rewrite the flow.
+ * Ask the coding agent to rewrite the flow.
  *
- * Shelling out to the same agent the developer already uses keeps the loop
- * honest: this is the coding agent doing the repair, which is what the
- * challenge asks for, not a second model bolted on for the demo.
+ * Two routes, because the agent that repairs the test should be the one the
+ * developer already has. `claude -p` is preferred — it is the same Claude Code
+ * that wrote this project, so the loop closes on a real coding agent rather
+ * than a model bolted on for the demo. When it is not signed in, any
+ * OpenAI-compatible endpoint stands in; the prompt and the two acceptance
+ * checks are identical either way, so the repair is judged the same however
+ * it was produced.
  */
-function askClaude(prompt, { timeoutMs = 240000 } = {}) {
+function askAgent(prompt, { timeoutMs = 240000 } = {}) {
+  return claudeCode(prompt, timeoutMs).catch((e) => {
+    if (!process.env.LLM_API_KEY) throw e;
+    return viaApi(prompt);
+  });
+}
+
+function claudeCode(prompt, timeoutMs) {
   return new Promise((resolve, reject) => {
     const child = spawn("claude", ["-p", prompt], { stdio: ["ignore", "pipe", "pipe"] });
     let out = "", err = "";
@@ -73,9 +84,36 @@ function askClaude(prompt, { timeoutMs = 240000 } = {}) {
     child.on("close", () => {
       clearTimeout(timer);
       const text = out.trim();
-      text ? resolve(text) : reject(new Error(`claude returned nothing. stderr: ${err.slice(0, 200)}`));
+      // A signed-out Claude Code exits 0 and prints its complaint to stdout,
+      // so an empty body is not the only failure worth falling back on.
+      if (!text || /not (logged in|authenticated)|OAuth session expired/i.test(text)) {
+        return reject(new Error(`claude unavailable: ${(text || err).slice(0, 120)}`));
+      }
+      resolve(text);
     });
   });
+}
+
+async function viaApi(prompt) {
+  const base = process.env.LLM_BASE_URL || "https://api.groq.com/openai/v1";
+  const res = await fetch(`${base}/chat/completions`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Bearer ${process.env.LLM_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: process.env.LLM_MODEL || "openai/gpt-oss-120b",
+      max_tokens: 4000,   // reasoning shares this budget; a tight cap returns an empty answer
+      messages: [{ role: "user", content: prompt }],
+    }),
+    signal: AbortSignal.timeout(180000),
+  });
+  if (!res.ok) throw new Error(`agent HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  const data = await res.json();
+  const text = data.choices?.[0]?.message?.content?.trim();
+  if (!text) throw new Error("agent returned nothing");
+  return text;
 }
 
 /** Strip fences the model may add despite being asked not to. */
@@ -103,7 +141,7 @@ export async function repair(testPath, mutation, { onEvent = () => {} } = {}) {
 
   onEvent({ step: "asking-claude", mutation: mutation.id });
   const rewritten = cleanTest(
-    await askClaude(PROMPT.replace("{describes}", mutation.describes).replace("{test}", before))
+    await askAgent(PROMPT.replace("{describes}", mutation.describes).replace("{test}", before))
   );
   await writeFile(testPath, rewritten);
   onEvent({ step: "test-rewritten", chars: rewritten.length });
