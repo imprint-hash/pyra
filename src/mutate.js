@@ -14,7 +14,7 @@
  * withMutation().
  */
 
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile, unlink } from "node:fs/promises";
 
 export const MUTATIONS = [
   {
@@ -62,15 +62,39 @@ export const MUTATIONS = [
   },
 ];
 
+const BACKUP = ".mutation-backup";
+
+/**
+ * Put the app back if a previous run died while a mutation was applied.
+ *
+ * `finally` is not enough. A SIGKILL — a timeout, a closed terminal, a stopped
+ * background job — skips it entirely, and we have already had one run leave a
+ * disabled balance check sitting in the working tree. A backup written before
+ * the edit survives that, so the next start can undo it.
+ *
+ * Call this before anything else touches the app.
+ */
+export async function restoreIfInterrupted(logicPath) {
+  let saved;
+  try { saved = await readFile(BACKUP, "utf8"); }
+  catch { return { restored: false }; }
+
+  const current = await readFile(logicPath, "utf8");
+  await writeFile(logicPath, saved);
+  await unlink(BACKUP).catch(() => {});
+  return { restored: current !== saved };
+}
+
 /**
  * Run `fn` with one mutation applied, then always put the file back.
  *
- * The restore lives in `finally` because a crash mid-sweep that left a
- * mutation on disk would silently poison every later result — and worse,
- * would leave the developer's own app broken.
+ * The restore lives in `finally` for the ordinary path and in a backup file
+ * for the violent one, because a mutation left on disk silently poisons every
+ * later result — and leaves the developer's own app broken.
  */
 export async function withMutation(logicPath, mutation, fn) {
   const original = await readFile(logicPath, "utf8");
+  await writeFile(BACKUP, original);
 
   if (!original.includes(mutation.find)) {
     throw new Error(
@@ -84,6 +108,7 @@ export async function withMutation(logicPath, mutation, fn) {
     return await fn();
   } finally {
     await writeFile(logicPath, original);
+    await unlink(BACKUP).catch(() => {});
   }
 }
 
