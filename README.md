@@ -117,7 +117,15 @@ per-step counts that the scorer needs.
 
 ---
 
-## Run it
+## Try it
+
+**The app under test is live: [pyra-omega.vercel.app](https://pyra-omega.vercel.app)**
+
+Buy two shares of NVDA — cash drops to £3,315.00. Then try to buy 999 and watch
+the balance check refuse it. Those are two of the rules the faults below switch
+off, one at a time.
+
+## Run the tool
 
 ```bash
 git clone https://github.com/imprint-hash/pyra && cd pyra
