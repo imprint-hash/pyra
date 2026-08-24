@@ -4,3 +4,5 @@ reports/*.html
 *.log
 .env
 .mutation-backup
+pyra-demo.mp4
+*.mp4
