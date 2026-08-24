@@ -49,7 +49,7 @@ stays green has been *shown* to be blind, not argued to be.
 
 **3. Repair the test, never the app.** A survived fault is evidence about the
 test — we broke the app ourselves and know exactly how. So the flow is handed
-to a coding agent, which rewrites it.
+to a coding agent (Claude Code, via `claude -p`), which rewrites it.
 
 **4. Judge the repair twice.** It must **fail** under the fault *and* still
 **pass** on a healthy app. Without the second check, "verify an error appears"
@@ -84,10 +84,14 @@ Verify the page shows "Cash: £3315.00".
 Verify the page shows "You hold: 2 NVDA".
 Clear the "Number of shares" field and type "10". Click "Buy".
 Verify the page shows "Not enough cash. This order costs £8425.00."
+Verify the page shows "Cash: £3315.00".
+Verify the page shows "You hold: 2 NVDA".
 ```
 
 It did the arithmetic itself — £5000 − 2 × £842.50 = £3315.00, and
-10 × £842.50 = £8425.00.
+10 × £842.50 = £8425.00 — and asked for something nobody requested: after the
+refused order, that the cash and the position are *unchanged*. An error
+message on screen does not prove the order was not placed anyway.
 
 That rewrite also caught a **second** fault nobody asked about: asserting an
 exact cash figure notices when the order total loses its multiplier. Asserting
@@ -127,32 +131,21 @@ off, one at a time.
 
 ## Run the tool
 
-```bash
-git clone https://github.com/imprint-hash/pyra && cd pyra
-node src/cli.js sweep
-```
-
-Kane replays the flow against each of six injected faults and writes
-`reports/alarm.html`. Takes about three minutes — most of it is Chrome
-starting once per fault.
-
-To see just the app, without Kane: `node app/server.js` → localhost:4321.
-Buy two shares of NVDA, then try to buy 999 and watch it refuse.
-
-## Running it
-
 Requires Node 18+, Chrome, and a logged-in `kane-cli`.
 
 ```bash
+git clone https://github.com/imprint-hash/pyra && cd pyra
 npm install -g @testmuai/kane-cli && kane-cli login
-node app/server.js          # the app under test, on :4321
 
 node src/cli.js sweep       # break it six ways, score the flows
 node src/cli.js repair      # sweep, repair one survivor, sweep again
 node src/cli.js demo        # sweep, repair every survivor, sweep again
 ```
 
-Reports land in `reports/alarm.html`.
+A sweep takes about three minutes — most of it is Chrome starting once per
+fault — and writes `reports/alarm.html`.
+
+To see just the app, with no Kane and no install: `node app/server.js`.
 
 The repair step uses `claude -p` when Claude Code is signed in, and falls back
 to any OpenAI-compatible endpoint via `.env` (see `.env.example`).

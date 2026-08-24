@@ -17,6 +17,8 @@ Verify the page shows "You hold: 2 NVDA".
 Clear the "Number of shares" field and type "10".
 Click the "Buy" button.
 
-## Verify insufficient cash error
+## Verify insufficient cash error and that no order was placed
 
 Verify the page shows "Not enough cash. This order costs £8425.00."
+Verify the page shows "Cash: £3315.00".
+Verify the page shows "You hold: 2 NVDA".
