@@ -6,7 +6,7 @@
  * rules decide, so a mutation shows up as changed behaviour in a browser
  * rather than as a crash.
  *
- *   node app/server.js          → http://localhost:4321
+ *   node app/server.js          
  *
  * Accounts live in memory, keyed by a cookie. A database would add a second
  * thing that can break and would prove nothing about the idea.
