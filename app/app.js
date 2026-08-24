@@ -17,96 +17,242 @@ export const OPENING_CASH = 5_000_00;
 
 export const newAccount = () => ({ cash: OPENING_CASH, holdings: {} });
 
+
+/**
+ * Presentation-only data.
+ *
+ * Kept here rather than in logic.js because that file is the one the fault
+ * injector rewrites, and a mutation must stay a single edit to a rule — not
+ * something that also happens to move a chart.
+ *
+ * The series are fixed, never generated. A price line that changed between
+ * renders would make a flow's assertion fail for reasons that have nothing to
+ * do with whether the app is broken.
+ */
+const TAPE = {
+  NVDA: { change: +2.41, series: [58, 61, 57, 64, 69, 66, 72, 78, 74, 81, 86, 84] },
+  AAPL: { change: -0.87, series: [72, 70, 73, 68, 66, 69, 64, 61, 63, 58, 60, 57] },
+  TSLA: { change: +1.12, series: [44, 47, 45, 51, 49, 54, 58, 55, 60, 63, 61, 66] },
+};
+
+/** A sparkline as an inline path — no assets, no requests. */
+function spark(series, up) {
+  const w = 104, h = 30, min = Math.min(...series), max = Math.max(...series);
+  const span = max - min || 1;
+  const pts = series.map((v, i) => {
+    const x = (i / (series.length - 1)) * w;
+    const y = h - ((v - min) / span) * (h - 4) - 2;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  });
+  return `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true" class="spark">
+    <polyline points="${pts.join(" ")}" fill="none" stroke="${up ? "var(--up)" : "var(--down)"}" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+const pct = (n) => `${n > 0 ? "+" : ""}${n.toFixed(2)}%`;
+
 const esc = (s) => String(s).replace(/[<>&"]/g, (c) =>
   ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
 
-function page(title, body) {
+function page(title, body, active = "") {
+  const nav = (href, label, id) =>
+    `<a href="${href}"${id ? ` id="${id}"` : ""} class="${active === label ? "on" : ""}">${label}</a>`;
+
   return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)} · Bellweather</title>
 <style>
- :root{--ink:#12141a;--paper:#f7f7f4;--line:#dcdcd6;--up:#0b7a54;--down:#b3261e;--accent:#1b4dd8}
- @media(prefers-color-scheme:dark){:root{--ink:#eceef2;--paper:#101218;--line:#2a2e39;--up:#37c58c;--down:#ff8a80;--accent:#7d9bff}}
+ :root{
+   --bg:#0B0E14; --panel:#121722; --panel2:#161C29; --line:#222A3A;
+   --ink:#E6EAF2; --dim:#8A94A8; --up:#22C55E; --down:#F0525B; --accent:#4C8DFF;
+   --mono:ui-monospace,"SF Mono","Cascadia Mono",Consolas,monospace;
+ }
+ @media(prefers-color-scheme:light){
+   :root{--bg:#F4F6FA;--panel:#FFFFFF;--panel2:#F8FAFD;--line:#E2E7F0;
+         --ink:#101725;--dim:#5D6779;--up:#0E9F5B;--down:#D03A44;--accent:#2563EB}
+ }
  *{box-sizing:border-box}
- body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 ui-sans-serif,system-ui,sans-serif}
- .wrap{max-width:780px;margin:0 auto;padding:26px 20px 64px}
- header{display:flex;gap:20px;align-items:baseline;justify-content:space-between;
-   border-bottom:2px solid var(--line);padding-bottom:14px;margin-bottom:24px}
- h1{font-size:19px;margin:0;letter-spacing:-.01em}
- a{color:var(--accent)}
- .num{font-variant-numeric:tabular-nums}
+ body{margin:0;background:var(--bg);color:var(--ink);
+   font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+   -webkit-font-smoothing:antialiased}
+ .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+ a{color:var(--accent);text-decoration:none}
+
+ .topbar{display:flex;align-items:center;gap:26px;padding:0 22px;height:58px;
+   background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+ .brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:-.02em;font-size:17px;color:var(--ink)}
+ .brand .dot{width:9px;height:9px;border-radius:2px;background:var(--up);box-shadow:0 0 10px var(--up)}
+ .topbar nav{display:flex;gap:18px;font-size:14px}
+ .topbar nav a{color:var(--dim);padding:4px 2px;border-bottom:2px solid transparent}
+ .topbar nav a.on,.topbar nav a:hover{color:var(--ink);border-bottom-color:var(--accent)}
+ .session{margin-left:auto;font-size:12px;color:var(--dim);display:flex;align-items:center;gap:7px}
+ .session .live{width:7px;height:7px;border-radius:99px;background:var(--up)}
+
+ .wrap{max-width:1080px;margin:0 auto;padding:26px 22px 72px}
+ h2{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);
+    margin:0 0 12px;font-weight:600}
+ .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+ .card .pad{padding:20px 22px}
+
  table{width:100%;border-collapse:collapse}
- td,th{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
- th{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:#7d7d86}
- button{font:inherit;font-weight:600;padding:10px 18px;border-radius:9px;border:1px solid var(--accent);
-   background:var(--accent);color:#fff;cursor:pointer}
- button.sell{background:transparent;color:var(--accent)}
- input{font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:9px;
-   background:var(--paper);color:var(--ink)}
- label{display:block;margin:12px 0 4px;font-weight:600;font-size:14px}
- .err{color:var(--down);font-size:14px;margin-top:6px;font-weight:600}
- .ok{color:var(--up);font-weight:700}
- .cash{font-size:22px;font-weight:700}
-</style></head><body><div class="wrap">
-<header><h1><a href="/" style="text-decoration:none;color:inherit">Bellweather</a></h1>
-<a href="/portfolio" id="portfolio-link">Portfolio</a></header>
-${body}</div></body></html>`;
+ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);
+    text-align:left;padding:11px 18px;background:var(--panel2);border-bottom:1px solid var(--line);font-weight:600}
+ td{padding:14px 18px;border-bottom:1px solid var(--line)}
+ tr:last-child td{border-bottom:0}
+ tbody tr:hover{background:var(--panel2)}
+ th.r,td.r{text-align:right}
+ .tick{font-family:var(--mono);font-weight:700;letter-spacing:-.02em}
+ .co{color:var(--dim);font-size:13px}
+ .up{color:var(--up)} .down{color:var(--down)}
+ .spark{display:block}
+
+ .cols{display:grid;grid-template-columns:1fr;gap:20px}
+ @media(min-width:900px){.cols{grid-template-columns:1.35fr .95fr;align-items:start}}
+
+ .quote{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+ .big{font-family:var(--mono);font-size:38px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+ .stat{display:flex;gap:26px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap}
+ .stat div span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);margin-bottom:3px}
+ .stat div p{margin:0;font-family:var(--mono);font-size:16px;font-weight:600}
+
+ label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.07em;
+   color:var(--dim);margin:0 0 7px;font-weight:600}
+ input{font:inherit;font-family:var(--mono);font-size:17px;padding:12px 14px;width:100%;
+   border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink)}
+ input:focus{outline:2px solid var(--accent);outline-offset:1px}
+ .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+ button{font:inherit;font-weight:700;font-size:15px;padding:13px 10px;border-radius:9px;cursor:pointer;
+   border:1px solid transparent;letter-spacing:.02em}
+ #buy{background:var(--up);color:#04140B}
+ #sell{background:transparent;color:var(--down);border-color:var(--down)}
+ button:hover{filter:brightness(1.08)}
+
+ .msg{margin:14px 0 0;padding:12px 14px;border-radius:9px;font-size:14px;font-weight:600}
+ .err{background:color-mix(in srgb,var(--down) 14%,transparent);color:var(--down)}
+ .ok{background:color-mix(in srgb,var(--up) 14%,transparent);color:var(--up)}
+
+ .bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:6px}
+ .bar i{display:block;height:100%;background:var(--accent)}
+ .foot{margin-top:26px;font-size:12px;color:var(--dim);text-align:center}
+</style></head><body>
+<div class="topbar">
+  <div class="brand"><span class="dot"></span>Bellweather</div>
+  <nav>${nav("/", "Markets")}${nav("/portfolio", "Portfolio", "portfolio-link")}</nav>
+  <div class="session"><span class="live"></span>Paper account · GBP</div>
+</div>
+<div class="wrap">${body}
+<p class="foot">Paper trading demo. No real orders are placed.</p>
+</div></body></html>`;
 }
 
 const market = () => {
-  const rows = MARKET.map((s) => `<tr>
-      <td><a href="/trade/${s.ticker}" id="link-${s.ticker}">${s.ticker}</a></td>
-      <td>${esc(s.name)}</td>
-      <td class="num">${money(s.price)}</td>
-    </tr>`).join("");
-  return page("Market", `<h2>Market</h2>
-    <table><thead><tr><th>Ticker</th><th>Name</th><th>Price</th></tr></thead>
-    <tbody>${rows}</tbody></table>`);
+  const rows = MARKET.map((s) => {
+    const t = TAPE[s.ticker];
+    const up = t.change >= 0;
+    return `<tr>
+      <td><a href="/trade/${s.ticker}" id="link-${s.ticker}" class="tick">${s.ticker}</a>
+          <div class="co">${esc(s.name)}</div></td>
+      <td>${spark(t.series, up)}</td>
+      <td class="r num">${money(s.price)}</td>
+      <td class="r num ${up ? "up" : "down"}">${pct(t.change)}</td>
+    </tr>`;
+  }).join("");
+
+  return page("Market", `
+    <h2>Markets</h2>
+    <div class="card">
+      <table>
+        <thead><tr><th>Instrument</th><th>Last 12</th><th class="r">Price</th><th class="r">Change</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`, "Markets");
 };
 
 function tradePage(account, ticker, { errors = {}, values = {}, done = "", now = Date.now() } = {}) {
   const s = findStock(ticker);
   if (!s) return null;
   const held = account.holdings[s.ticker] || 0;
-  const errorFor = (k) => errors[k] ? `<p class="err" id="err-${k}">${esc(errors[k])}</p>` : "";
+  const t = TAPE[s.ticker];
+  const up = t.change >= 0;
+  const errorFor = (k) =>
+    errors[k] ? `<p class="msg err" id="err-${k}">${esc(errors[k])}</p>` : "";
 
   return page(`Trade ${s.ticker}`, `
-    <h2>${esc(s.name)} <span class="num">(${s.ticker})</span></h2>
-    <p class="num" id="price">Price: ${money(s.price)}</p>
-    <p class="num" id="cash">Cash: ${money(account.cash)}</p>
-    <p class="num" id="held">You hold: ${held} ${s.ticker}</p>
-    ${done ? `<p class="ok" id="confirmation">${esc(done)}</p>` : ""}
-    ${errorFor("quote")}${errorFor("cash")}${errorFor("holdings")}${errorFor("side")}
-    <form method="POST" action="/order">
-      <input type="hidden" name="ticker" value="${s.ticker}">
-      <input type="hidden" name="quotedAt" value="${now}">
-      <label for="quantity">Number of shares</label>
-      <input id="quantity" name="quantity" value="${esc(values.quantity ?? "1")}" inputmode="numeric" style="max-width:130px">
-      ${errorFor("quantity")}
-      <p style="display:flex;gap:10px;margin-top:16px">
-        <button type="submit" name="side" value="buy" id="buy">Buy</button>
-        <button type="submit" name="side" value="sell" id="sell" class="sell">Sell</button>
-      </p>
-    </form>
-    <p><a href="/">Back to market</a></p>`);
+    <div class="cols">
+      <div>
+        <h2>${esc(s.name)}</h2>
+        <div class="card"><div class="pad">
+          <div class="quote">
+            <div>
+              <div class="tick" style="font-size:14px;color:var(--dim)">${s.ticker} · LSE</div>
+              <p class="big" id="price">Price: ${money(s.price)}</p>
+              <p class="num ${up ? "up" : "down"}" style="margin:2px 0 0">${pct(t.change)} today</p>
+            </div>
+            ${spark(t.series, up)}
+          </div>
+          <div class="stat">
+            <div><span>Buying power</span><p class="num" id="cash">Cash: ${money(account.cash)}</p></div>
+            <div><span>Position</span><p class="num" id="held">You hold: ${held} ${s.ticker}</p></div>
+            <div><span>Quote expires</span><p class="num">60s</p></div>
+          </div>
+        </div></div>
+      </div>
+
+      <div>
+        <h2>Order ticket</h2>
+        <div class="card"><div class="pad">
+          <form method="POST" action="/order">
+            <input type="hidden" name="ticker" value="${s.ticker}">
+            <input type="hidden" name="quotedAt" value="${now}">
+            <label for="quantity">Number of shares</label>
+            <input id="quantity" name="quantity" value="${esc(values.quantity ?? "1")}" inputmode="numeric">
+            ${errorFor("quantity")}
+            <div class="btns">
+              <button type="submit" name="side" value="buy" id="buy">Buy</button>
+              <button type="submit" name="side" value="sell" id="sell">Sell</button>
+            </div>
+          </form>
+          ${done ? `<p class="msg ok" id="confirmation">${esc(done)}</p>` : ""}
+          ${errorFor("cash")}${errorFor("holdings")}${errorFor("quote")}${errorFor("side")}
+        </div></div>
+      </div>
+    </div>`, "Markets");
 }
 
 function portfolio(account) {
   const held = Object.entries(account.holdings).filter(([, q]) => q > 0);
+  const value = held.reduce((sum, [t, q]) => sum + orderTotal(findStock(t).price, q), 0);
+  const total = account.cash + value;
+
   const rows = held.length
     ? held.map(([t, q]) => {
-        const s = findStock(t);
-        return `<tr><td>${t}</td><td class="num">${q}</td>
-          <td class="num">${money(orderTotal(s.price, q))}</td></tr>`;
+        const st = findStock(t);
+        const v = orderTotal(st.price, q);
+        const share = total ? Math.round((v / total) * 100) : 0;
+        return `<tr>
+          <td><span class="tick">${t}</span><div class="co">${esc(st.name)}</div></td>
+          <td class="r num">${q}</td>
+          <td class="r num">${money(v)}
+            <div class="bar"><i style="width:${share}%"></i></div></td>
+        </tr>`;
       }).join("")
-    : `<tr><td colspan="3" id="no-holdings">You hold no shares.</td></tr>`;
-  const value = held.reduce((sum, [t, q]) => sum + orderTotal(findStock(t).price, q), 0);
-  return page("Portfolio", `<h2>Portfolio</h2>
-    <p class="cash num" id="cash">Cash: ${money(account.cash)}</p>
-    <table><thead><tr><th>Ticker</th><th>Shares</th><th>Value</th></tr></thead>
-    <tbody>${rows}</tbody></table>
-    <p class="num" id="total-value">Holdings value: ${money(value)}</p>
-    <p><a href="/">Back to market</a></p>`);
+    : `<tr><td colspan="3" id="no-holdings" style="color:var(--dim)">You hold no shares.</td></tr>`;
+
+  return page("Portfolio", `
+    <h2>Portfolio</h2>
+    <div class="card"><div class="pad">
+      <div class="stat" style="border-top:0;padding-top:0;margin-top:0">
+        <div><span>Cash</span><p class="num" id="cash">Cash: ${money(account.cash)}</p></div>
+        <div><span>Holdings</span><p class="num" id="total-value">Holdings value: ${money(value)}</p></div>
+        <div><span>Account total</span><p class="num">${money(total)}</p></div>
+      </div>
+    </div></div>
+    <div class="card" style="margin-top:20px">
+      <table>
+        <thead><tr><th>Instrument</th><th class="r">Shares</th><th class="r">Value</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`, "Portfolio");
 }
 
 /**

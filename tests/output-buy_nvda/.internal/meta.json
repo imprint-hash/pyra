@@ -76,6 +76,13 @@
       "status": "passed",
       "valid": true,
       "at": "2026-08-24T11:37:17.576Z"
+    },
+    {
+      "execution_id": "cb34735d-fc50-4056-b738-10a53d4c0d36",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-24T11:59:04.545Z"
     }
   ]
 }
