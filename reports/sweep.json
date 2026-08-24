@@ -8,7 +8,7 @@
    "passed": true,
    "failed": 0,
    "total": 4,
-   "durationS": 11,
+   "durationS": 9,
    "healed": false,
    "suspectGreen": false
   }
@@ -17,15 +17,17 @@
   {
    "id": "spend-beyond-balance",
    "describes": "You can buy shares with money you do not have.",
-   "caught": false,
-   "caughtBy": [],
+   "caught": true,
+   "caughtBy": [
+    "tests/buy_nvda_test.md"
+   ],
    "perTest": {
     "tests/buy_nvda_test.md": {
-     "passed": true,
-     "failed": 0,
+     "passed": false,
+     "failed": 1,
      "total": 4,
-     "durationS": 20,
-     "healed": false,
+     "durationS": 99,
+     "healed": true,
      "suspectGreen": false
     }
    }
@@ -40,7 +42,7 @@
      "passed": true,
      "failed": 0,
      "total": 4,
-     "durationS": 21,
+     "durationS": 33,
      "healed": false,
      "suspectGreen": false
     }
@@ -49,15 +51,17 @@
   {
    "id": "total-ignores-quantity",
    "describes": "A 100-share order is charged as one share.",
-   "caught": false,
-   "caughtBy": [],
+   "caught": true,
+   "caughtBy": [
+    "tests/buy_nvda_test.md"
+   ],
    "perTest": {
     "tests/buy_nvda_test.md": {
-     "passed": true,
-     "failed": 0,
+     "passed": false,
+     "failed": 1,
      "total": 4,
-     "durationS": 25,
-     "healed": false,
+     "durationS": 124,
+     "healed": true,
      "suspectGreen": false
     }
    }
@@ -72,7 +76,7 @@
      "passed": true,
      "failed": 0,
      "total": 4,
-     "durationS": 22,
+     "durationS": 96,
      "healed": false,
      "suspectGreen": false
     }
@@ -88,7 +92,7 @@
      "passed": true,
      "failed": 0,
      "total": 4,
-     "durationS": 15,
+     "durationS": 13,
      "healed": false,
      "suspectGreen": false
     }
@@ -104,7 +108,7 @@
      "passed": true,
      "failed": 0,
      "total": 4,
-     "durationS": 11,
+     "durationS": 7,
      "healed": false,
      "suspectGreen": false
     }
@@ -113,8 +117,8 @@
  ],
  "score": {
   "mutations": 6,
-  "caught": 0,
-  "survived": 6,
-  "alarmScore": 0
+  "caught": 2,
+  "survived": 4,
+  "alarmScore": 33
  }
 }

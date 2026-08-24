@@ -1,5 +1,5 @@
 {
-  "commit_id": "908976ea-2d71-427e-9bde-674ef89692ee",
+  "commit_id": "99e0ccfd-7dc0-4ab6-9af0-9a673900415c",
   "test_id": "edb1c87e-3301-4a07-9722-ec72bec07802",
   "testcase_id": "01M0NH1G09EBZQ0P3VCFR75SA3",
   "project_id": "01M0N49XCX7Q1VXFTGZHKX4QAD",
@@ -8,11 +8,25 @@
   "session_name": "buy_nvda",
   "executions": [
     {
-      "execution_id": "38886713-5459-436f-a5d3-6619865df066",
+      "execution_id": "f4c2b4a4-32be-4b9a-a65d-c2e658a83725",
       "run_kind": "author",
       "status": "passed",
       "valid": true,
-      "at": "2026-08-24T08:04:48.484Z"
+      "at": "2026-08-24T08:13:09.235Z"
+    },
+    {
+      "execution_id": "f1b60f6c-9420-461c-b309-64ad09eee9e9",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-24T08:13:31.577Z"
+    },
+    {
+      "execution_id": "fe182d2b-f167-4e6f-beae-bc70c44cb6d5",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-24T08:13:49.958Z"
     }
   ]
 }

@@ -2,24 +2,24 @@
   "test_id": "edb1c87e-3301-4a07-9722-ec72bec07802",
   "version": "v4",
   "auto_heal_version": "AH2",
-  "session_id": "908976ea-2d71-427e-9bde-674ef89692ee",
+  "session_id": "99e0ccfd-7dc0-4ab6-9af0-9a673900415c",
   "org_id": "3286131",
   "user_id": "3455987",
   "url": "http://localhost:4321/trade/NVDA",
-  "start_timestamp": "2026-08-24T08:03:59.809Z",
-  "end_timestamp": "2026-08-24T08:04:45.802Z",
+  "start_timestamp": "2026-08-24T08:11:27.643Z",
+  "end_timestamp": "2026-08-24T08:13:05.907Z",
   "status": "success",
-  "commit_id": "908976ea-2d71-427e-9bde-674ef89692ee",
+  "commit_id": "99e0ccfd-7dc0-4ab6-9af0-9a673900415c",
   "instructions": [
     {
       "content_type": "generative_block",
-      "instruction_id": "generative_block_a74aa668e6ef478c9324f7c77a14e47c",
-      "generative_id": "a74aa668e6ef478c9324f7c77a14e47c",
+      "instruction_id": "generative_block_e7342b244ef2478391d32abcc7ca3f4e",
+      "generative_id": "e7342b244ef2478391d32abcc7ca3f4e",
       "objective": "Type \"2\" into the \"Number of shares\" field.\nClick the \"Buy\" button.",
       "status": "success",
       "children": [
         {
-          "instruction_id": "3cdbd770-a3b9-43a7-9468-412c7d174ba3",
+          "instruction_id": "1d48969d-2065-4c0b-98be-f903c52fd1f0",
           "instruction_class": "driver_action",
           "module_id": "",
           "instruction": "Navigate to http://localhost:4321/trade/NVDA",
@@ -31,11 +31,11 @@
           "operations": [
             {
               "operation_id": "41337eea-0229-4ee5-993d-cef2e7ed627e",
-              "instruction_id": "3cdbd770-a3b9-43a7-9468-412c7d174ba3",
+              "instruction_id": "1d48969d-2065-4c0b-98be-f903c52fd1f0",
               "instruction": "Navigate to http://localhost:4321/trade/NVDA",
               "intent": "Navigate to http://localhost:4321/trade/NVDA",
-              "operation_start": "2026-08-24T08:04:07.271211+00:00",
-              "operation_end": "2026-08-24T08:04:07.410Z",
+              "operation_start": "2026-08-24T08:11:35.804087+00:00",
+              "operation_end": "2026-08-24T08:11:35.873Z",
               "status": "success",
               "command": "OPEN",
               "name": "",
@@ -149,8 +149,8 @@
             }
           ],
           "status": "success",
-          "start_timestamp": "2026-08-24T08:04:07.271211+00:00",
-          "end_timestamp": "2026-08-24T08:04:07.410Z",
+          "start_timestamp": "2026-08-24T08:11:35.804087+00:00",
+          "end_timestamp": "2026-08-24T08:11:35.873Z",
           "type": "agent_generated",
           "tags": [],
           "html_paths": [],
@@ -176,7 +176,7 @@
           "network_assertion_content": {},
           "screenshot_command": "",
           "smartui_contents": {},
-          "generative_id": "a74aa668e6ef478c9324f7c77a14e47c",
+          "generative_id": "e7342b244ef2478391d32abcc7ca3f4e",
           "plan_id": "",
           "generative_objective": "Type \"2\" into the \"Number of shares\" field.\nClick the \"Buy\" button.",
           "error_message": "",
@@ -187,7 +187,7 @@
           "reasoning": "Navigate to http://localhost:4321/trade/NVDA"
         },
         {
-          "instruction_id": "64a2e12e-132b-4aab-9ab2-5c27e092f29a",
+          "instruction_id": "2012c83a-ad9b-41b7-9d1e-41ad1b72514d",
           "instruction_class": "driver_action",
           "module_id": "",
           "instruction": "Typing 2 into number of shares field",
@@ -199,11 +199,11 @@
           "operations": [
             {
               "operation_id": "d1c60303-772a-4f96-9301-2085e65ad4d6",
-              "instruction_id": "64a2e12e-132b-4aab-9ab2-5c27e092f29a",
+              "instruction_id": "2012c83a-ad9b-41b7-9d1e-41ad1b72514d",
               "instruction": "Typing 2 into number of shares field",
               "intent": "Typing 2 into number of shares field",
-              "operation_start": "2026-08-24T08:04:07.908272+00:00",
-              "operation_end": "2026-08-24T08:04:08.226Z",
+              "operation_start": "2026-08-24T08:11:36.144655+00:00",
+              "operation_end": "2026-08-24T08:11:36.313Z",
               "status": "success",
               "command": "TYPE",
               "name": "",
@@ -342,8 +342,8 @@
             }
           ],
           "status": "success",
-          "start_timestamp": "2026-08-24T08:04:07.908272+00:00",
-          "end_timestamp": "2026-08-24T08:04:08.226Z",
+          "start_timestamp": "2026-08-24T08:11:36.144655+00:00",
+          "end_timestamp": "2026-08-24T08:11:36.313Z",
           "type": "agent_generated",
           "tags": [],
           "html_paths": [],
@@ -369,7 +369,7 @@
           "network_assertion_content": {},
           "screenshot_command": "",
           "smartui_contents": {},
-          "generative_id": "a74aa668e6ef478c9324f7c77a14e47c",
+          "generative_id": "e7342b244ef2478391d32abcc7ca3f4e",
           "plan_id": "",
           "generative_objective": "Type \"2\" into the \"Number of shares\" field.\nClick the \"Buy\" button.",
           "error_message": "",
@@ -380,7 +380,7 @@
           "reasoning": "PRIMARY: Number of shares input; role=textbox; text=\"Number of shares\" | HINTS: container=trade form below the Nvidia (NVDA) heading"
         },
         {
-          "instruction_id": "0e09afab-34ec-41e4-bfcb-ff2b4453378b",
+          "instruction_id": "8295c1c8-5940-420b-8572-bf2d2b9c5a8e",
           "instruction_class": "driver_action",
           "module_id": "",
           "instruction": "Clicking Buy button in the trade form below the number of shares input",
@@ -392,11 +392,11 @@
           "operations": [
             {
               "operation_id": "d369ac87-f874-4d4d-8cd9-5f191a0ee417",
-              "instruction_id": "0e09afab-34ec-41e4-bfcb-ff2b4453378b",
+              "instruction_id": "8295c1c8-5940-420b-8572-bf2d2b9c5a8e",
               "instruction": "Clicking Buy button in the trade form below the number of shares input",
               "intent": "Clicking Buy button in the trade form below the number of shares input",
-              "operation_start": "2026-08-24T08:04:08.437329+00:00",
-              "operation_end": "2026-08-24T08:04:08.608Z",
+              "operation_start": "2026-08-24T08:11:36.925303+00:00",
+              "operation_end": "2026-08-24T08:11:37.028Z",
               "status": "success",
               "command": "CLICK",
               "name": "",
@@ -535,8 +535,8 @@
             }
           ],
           "status": "success",
-          "start_timestamp": "2026-08-24T08:04:08.437329+00:00",
-          "end_timestamp": "2026-08-24T08:04:08.608Z",
+          "start_timestamp": "2026-08-24T08:11:36.925303+00:00",
+          "end_timestamp": "2026-08-24T08:11:37.028Z",
           "type": "agent_generated",
           "tags": [],
           "html_paths": [],
@@ -562,7 +562,7 @@
           "network_assertion_content": {},
           "screenshot_command": "",
           "smartui_contents": {},
-          "generative_id": "a74aa668e6ef478c9324f7c77a14e47c",
+          "generative_id": "e7342b244ef2478391d32abcc7ca3f4e",
           "plan_id": "",
           "generative_objective": "Type \"2\" into the \"Number of shares\" field.\nClick the \"Buy\" button.",
           "error_message": "",
@@ -582,16 +582,16 @@
     },
     {
       "content_type": "generative_block",
-      "instruction_id": "generative_block_212ebc1dd0764920a7c6c54d2017560f",
-      "generative_id": "212ebc1dd0764920a7c6c54d2017560f",
+      "instruction_id": "generative_block_4a5817e86be048e381cc8f92c3b0231b",
+      "generative_id": "4a5817e86be048e381cc8f92c3b0231b",
       "objective": "Verify the page shows \"Cash: £3315.00\".\nVerify the page shows \"You hold: 2 NVDA\".",
       "status": "success",
       "children": [
         {
-          "instruction_id": "bee79b53-a98d-4a66-98df-f003b0c864db",
+          "instruction_id": "591f11c1-873d-4636-bac1-09544928483b",
           "instruction_class": "driver_action",
           "module_id": "",
-          "instruction": "Reading the NVDA holdings display",
+          "instruction": "Reading the holdings text from the order page",
           "command": "TEXTUAL_ANALYZER",
           "error": null,
           "parent_instruction_id": "",
@@ -599,12 +599,12 @@
           "classification_error": {},
           "operations": [
             {
-              "operation_id": "c15b1ad3-4d61-4acc-ba1e-189d1314e747",
-              "instruction_id": "bee79b53-a98d-4a66-98df-f003b0c864db",
-              "instruction": "Reading the NVDA holdings display",
-              "intent": "Reading the NVDA holdings display",
-              "operation_start": "2026-08-24T08:04:09.332177+00:00",
-              "operation_end": "2026-08-24T08:04:09.464Z",
+              "operation_id": "36d33961-2cb9-4a9f-bd06-f7614389fb4f",
+              "instruction_id": "591f11c1-873d-4636-bac1-09544928483b",
+              "instruction": "Reading the holdings text from the order page",
+              "intent": "Reading the holdings text from the order page",
+              "operation_start": "2026-08-24T08:12:01.287345+00:00",
+              "operation_end": "",
               "status": "success",
               "command": "TEXTUAL_ANALYZER",
               "name": "",
@@ -615,7 +615,7 @@
               "frame": "",
               "error_message": "",
               "code_snippet": "",
-              "sub_instruction_obj": "{\"operation\":\"Reading the NVDA holdings display\",\"agent\":\"Operation Agent\",\"operation_dict\":{\"operation_type\":\"TEXTUAL_ANALYZER\"},\"reasoning\":\"the NVDA holdings display text\",\"variable\":{},\"secrets\":{},\"params\":{},\"code_js\":\"el(8)?.textContent\",\"wrapped_js\":\"(els) => {\\n  const __m = {8: 0};\\n  const el = (i) => els[__m[i]];\\n  const __v = (el(8)?.textContent);\\n  return (typeof __v === 'boolean' ? String(__v) : __v);\\n}\",\"locators\":[\"internal:text=\\\"You hold: 2 NVDA\\\"i\"],\"operator\":\"equals\",\"transforms\":[\"strip\"],\"query\":\"the NVDA holdings display text\",\"expected_value\":\"You hold: 2 NVDA\",\"needs_unit_conversion\":false,\"condition\":\"the page shows \\\"You hold: 2 NVDA\\\"\"}",
+              "sub_instruction_obj": "{\"operation\":\"Reading the holdings text from the order page\",\"agent\":\"Operation Agent\",\"operation_dict\":{\"operation_type\":\"TEXTUAL_ANALYZER\"},\"reasoning\":\"the holdings text displayed on the order page\",\"variable\":{},\"secrets\":{},\"params\":{},\"code_js\":\"el(8)?.textContent\",\"wrapped_js\":\"(els) => {\\n  const __m = {8: 0};\\n  const el = (i) => els[__m[i]];\\n  const __v = (el(8)?.textContent);\\n  return (typeof __v === 'boolean' ? String(__v) : __v);\\n}\",\"locators\":[\"internal:text=\\\"You hold: 2 NVDA\\\"i\"],\"operator\":\"equals\",\"transforms\":[\"strip\"],\"query\":\"the holdings text displayed on the order page\",\"expected_value\":\"You hold: 2 NVDA\",\"needs_unit_conversion\":false,\"condition\":\"The page shows \\\"You hold: 2 NVDA\\\".\"}",
               "test_id": "",
               "test_version": "",
               "action": "",
@@ -626,14 +626,14 @@
               "update_time_stamp": "",
               "locator_variable": "",
               "locator_variable_name": "",
-              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/c15b1ad3-4d61-4acc-ba1e-189d1314e747.webp",
+              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/36d33961-2cb9-4a9f-bd06-f7614389fb4f.webp",
               "alternative_xpaths": [],
               "attribute": "",
               "value_description": "",
               "url": "",
               "navigation_direction": "",
               "tagified_image_url": "",
-              "query_variable_name": "nvda_holdings_display_check",
+              "query_variable_name": "hold_2_nvda_display_check",
               "query_variable_value": "You hold: 2 NVDA",
               "query_variable_type": "",
               "expected_value": "",
@@ -713,15 +713,15 @@
               "until_settle_ms": 0,
               "api_data": {},
               "output_variables": {
-                "nvda_holdings_display_check": "You hold: 2 NVDA"
+                "hold_2_nvda_display_check": "You hold: 2 NVDA"
               },
               "visual_context": null,
-              "reasoning": "the NVDA holdings display text"
+              "reasoning": "the holdings text displayed on the order page"
             }
           ],
           "status": "success",
-          "start_timestamp": "2026-08-24T08:04:09.332177+00:00",
-          "end_timestamp": "2026-08-24T08:04:09.464Z",
+          "start_timestamp": "2026-08-24T08:12:01.287345+00:00",
+          "end_timestamp": "",
           "type": "agent_generated",
           "tags": [],
           "html_paths": [],
@@ -747,7 +747,7 @@
           "network_assertion_content": {},
           "screenshot_command": "",
           "smartui_contents": {},
-          "generative_id": "212ebc1dd0764920a7c6c54d2017560f",
+          "generative_id": "4a5817e86be048e381cc8f92c3b0231b",
           "plan_id": "",
           "generative_objective": "Verify the page shows \"Cash: £3315.00\".\nVerify the page shows \"You hold: 2 NVDA\".",
           "error_message": "",
@@ -755,13 +755,13 @@
           "reason": "",
           "title": "",
           "used_variables": [],
-          "reasoning": "the NVDA holdings display text"
+          "reasoning": "the holdings text displayed on the order page"
         },
         {
-          "instruction_id": "115851e9-8ccd-4511-957c-3ae457c46c31",
+          "instruction_id": "0237010d-4856-4736-a61e-9f36430f610d",
           "instruction_class": "driver_action",
           "module_id": "",
-          "instruction": "Reading the cash amount display",
+          "instruction": "Reading the cash amount text from the order page",
           "command": "TEXTUAL_ANALYZER",
           "error": null,
           "parent_instruction_id": "",
@@ -769,12 +769,12 @@
           "classification_error": {},
           "operations": [
             {
-              "operation_id": "52c2ca3a-4dbe-4641-97d7-4938b80049f9",
-              "instruction_id": "115851e9-8ccd-4511-957c-3ae457c46c31",
-              "instruction": "Reading the cash amount display",
-              "intent": "Reading the cash amount display",
-              "operation_start": "2026-08-24T08:04:09.530456+00:00",
-              "operation_end": "2026-08-24T08:04:09.607Z",
+              "operation_id": "6bc091fe-35f8-4673-8bdb-c26bf6e2f503",
+              "instruction_id": "0237010d-4856-4736-a61e-9f36430f610d",
+              "instruction": "Reading the cash amount text from the order page",
+              "intent": "Reading the cash amount text from the order page",
+              "operation_start": "2026-08-24T08:12:01.287956+00:00",
+              "operation_end": "",
               "status": "success",
               "command": "TEXTUAL_ANALYZER",
               "name": "",
@@ -785,7 +785,7 @@
               "frame": "",
               "error_message": "",
               "code_snippet": "",
-              "sub_instruction_obj": "{\"operation\":\"Reading the cash amount display\",\"agent\":\"Operation Agent\",\"operation_dict\":{\"operation_type\":\"TEXTUAL_ANALYZER\"},\"reasoning\":\"the cash amount display text\",\"variable\":{},\"secrets\":{},\"params\":{},\"code_js\":\"el(7)?.textContent\",\"wrapped_js\":\"(els) => {\\n  const __m = {7: 0};\\n  const el = (i) => els[__m[i]];\\n  const __v = (el(7)?.textContent);\\n  return (typeof __v === 'boolean' ? String(__v) : __v);\\n}\",\"locators\":[\"internal:text=\\\"Cash: £\\\"i\"],\"operator\":\"equals\",\"transforms\":[\"strip\"],\"query\":\"the cash amount display text\",\"expected_value\":\"Cash: £3315.00\",\"needs_unit_conversion\":false,\"condition\":\"the page shows \\\"Cash: £3315.00\\\"\"}",
+              "sub_instruction_obj": "{\"operation\":\"Reading the cash amount text from the order page\",\"agent\":\"Operation Agent\",\"operation_dict\":{\"operation_type\":\"TEXTUAL_ANALYZER\"},\"reasoning\":\"the cash amount text displayed on the order page\",\"variable\":{},\"secrets\":{},\"params\":{},\"code_js\":\"el(7)?.textContent\",\"wrapped_js\":\"(els) => {\\n  const __m = {7: 0};\\n  const el = (i) => els[__m[i]];\\n  const __v = (el(7)?.textContent);\\n  return (typeof __v === 'boolean' ? String(__v) : __v);\\n}\",\"locators\":[\"internal:text=\\\"Cash: £\\\"i\"],\"operator\":\"equals\",\"transforms\":[\"strip\"],\"query\":\"the cash amount text displayed on the order page\",\"expected_value\":\"Cash: £3315.00\",\"needs_unit_conversion\":false,\"condition\":\"The page shows \\\"Cash: £3315.00\\\".\"}",
               "test_id": "",
               "test_version": "",
               "action": "",
@@ -796,7 +796,7 @@
               "update_time_stamp": "",
               "locator_variable": "",
               "locator_variable_name": "",
-              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/52c2ca3a-4dbe-4641-97d7-4938b80049f9.webp",
+              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/6bc091fe-35f8-4673-8bdb-c26bf6e2f503.webp",
               "alternative_xpaths": [],
               "attribute": "",
               "value_description": "",
@@ -886,12 +886,12 @@
                 "cash_3315_display_check": "Cash: £3315.00"
               },
               "visual_context": null,
-              "reasoning": "the cash amount display text"
+              "reasoning": "the cash amount text displayed on the order page"
             }
           ],
           "status": "success",
-          "start_timestamp": "2026-08-24T08:04:09.530456+00:00",
-          "end_timestamp": "2026-08-24T08:04:09.607Z",
+          "start_timestamp": "2026-08-24T08:12:01.287956+00:00",
+          "end_timestamp": "",
           "type": "agent_generated",
           "tags": [],
           "html_paths": [],
@@ -917,7 +917,7 @@
           "network_assertion_content": {},
           "screenshot_command": "",
           "smartui_contents": {},
-          "generative_id": "212ebc1dd0764920a7c6c54d2017560f",
+          "generative_id": "4a5817e86be048e381cc8f92c3b0231b",
           "plan_id": "",
           "generative_objective": "Verify the page shows \"Cash: £3315.00\".\nVerify the page shows \"You hold: 2 NVDA\".",
           "error_message": "",
@@ -925,10 +925,10 @@
           "reason": "",
           "title": "",
           "used_variables": [],
-          "reasoning": "the cash amount display text"
+          "reasoning": "the cash amount text displayed on the order page"
         },
         {
-          "instruction_id": "ac376f0e-7d46-4e69-89d7-2fa2271a674a",
+          "instruction_id": "e28eb674-2d98-4ead-80b2-7b6b70a9f2b6",
           "instruction_class": "non_driver_action",
           "module_id": "",
           "instruction": "Assertion check",
@@ -944,7 +944,7 @@
                 "assertion_tree": {
                   "sub_results": [
                     {
-                      "description": "the page shows \"Cash: £3315.00\"",
+                      "description": "The page shows \"Cash: £3315.00\".",
                       "passed": true,
                       "operator": "equals",
                       "transforms": [
@@ -961,7 +961,7 @@
                   ],
                   "sub_checks": [
                     {
-                      "description": "the page shows \"Cash: £3315.00\"",
+                      "description": "The page shows \"Cash: £3315.00\".",
                       "store_key": "cash_3315_display_check",
                       "expected_value": "Cash: £3315.00",
                       "extracted_value": "{{cash_3315_display_check}}",
@@ -973,7 +973,7 @@
                   ],
                   "composite_operator": "and",
                   "verification": "",
-                  "claim": "the page shows \"Cash: £3315.00\"",
+                  "claim": "Verify the page shows \"Cash: £3315.00\".",
                   "operator": [],
                   "assertion_operands": [],
                   "left_operand": null,
@@ -989,12 +989,12 @@
           "classification_error": {},
           "operations": [
             {
-              "operation_id": "fb83a7d1-9cb4-4fa3-a05e-e6a941b32e1d",
-              "instruction_id": "ac376f0e-7d46-4e69-89d7-2fa2271a674a",
+              "operation_id": "9ff222cf-5da1-469c-b339-a2139a2474ad",
+              "instruction_id": "e28eb674-2d98-4ead-80b2-7b6b70a9f2b6",
               "instruction": "Assertion check",
               "intent": "Assertion check",
-              "operation_start": "2026-08-24T08:04:09.683011+00:00",
-              "operation_end": "2026-08-24T08:04:09.687Z",
+              "operation_start": "2026-08-24T08:12:02.626099+00:00",
+              "operation_end": "",
               "status": "success",
               "command": "ASSERTION",
               "name": "",
@@ -1016,7 +1016,7 @@
               "update_time_stamp": "",
               "locator_variable": "",
               "locator_variable_name": "",
-              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/fb83a7d1-9cb4-4fa3-a05e-e6a941b32e1d.webp",
+              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/9ff222cf-5da1-469c-b339-a2139a2474ad.webp",
               "alternative_xpaths": [],
               "attribute": "",
               "value_description": "",
@@ -1024,7 +1024,7 @@
               "navigation_direction": "",
               "tagified_image_url": "",
               "query_variable_name": "",
-              "query_variable_value": "{'status': 'passed', 'composite_operator': 'and', 'sub_results': [{'description': 'the page shows \"Cash: £3315.00\"', 'passed': True, 'operator': 'equals', 'transforms': ['strip'], 'expected': 'Cash: £3315.00', 'extracted_value': 'Cash: £3315.00'}]}",
+              "query_variable_value": "",
               "query_variable_type": "",
               "expected_value": "",
               "queried_value": "",
@@ -1082,7 +1082,7 @@
                 "operands": [],
                 "sub_results": [
                   {
-                    "description": "the page shows \"Cash: £3315.00\"",
+                    "description": "The page shows \"Cash: £3315.00\".",
                     "passed": true,
                     "operator": "equals",
                     "transforms": [
@@ -1099,7 +1099,7 @@
                 ],
                 "sub_checks": [
                   {
-                    "description": "the page shows \"Cash: £3315.00\"",
+                    "description": "The page shows \"Cash: £3315.00\".",
                     "store_key": "cash_3315_display_check",
                     "expected_value": "Cash: £3315.00",
                     "extracted_value": "{{cash_3315_display_check}}",
@@ -1110,16 +1110,16 @@
                   }
                 ],
                 "composite_operator": "and",
-                "verification": "Look for the text \"Cash: £3315.00\" on the page.",
-                "claim": "the page shows \"Cash: £3315.00\""
+                "verification": "The page shows \"Cash: £3315.00\".",
+                "claim": "Verify the page shows \"Cash: £3315.00\"."
               },
               "assertion_tree": {
                 "assertion_id": "assert_cp_1",
                 "status": "passed",
-                "description": "the page shows \"Cash: £3315.00\"",
+                "description": "Verify the page shows \"Cash: £3315.00\".",
                 "sub_results": [
                   {
-                    "description": "the page shows \"Cash: £3315.00\"",
+                    "description": "The page shows \"Cash: £3315.00\".",
                     "passed": true,
                     "operator": "equals",
                     "transforms": [
@@ -1138,26 +1138,9 @@
                 "passed": true,
                 "step": 2,
                 "is_final": false,
-                "verification": "Look for the text \"Cash: £3315.00\" on the page.",
+                "verification": "The page shows \"Cash: £3315.00\".",
                 "error_message": null,
-                "duration_ms": 0,
-                "sub_checks": [
-                  {
-                    "description": "the page shows \"Cash: £3315.00\"",
-                    "passed": true,
-                    "operator": "equals",
-                    "transforms": [
-                      "strip"
-                    ],
-                    "json_path": null,
-                    "extracted_value": "{{cash_3315_display_check}}",
-                    "store_key": "cash_3315_display_check",
-                    "variable_refs": {
-                      "{{cash_3315_display_check}}": "Cash: £3315.00"
-                    },
-                    "expected_value": "Cash: £3315.00"
-                  }
-                ]
+                "duration_ms": 0
               },
               "assertion_tree_simplified": {},
               "network_throttle": {},
@@ -1191,8 +1174,8 @@
             }
           ],
           "status": "success",
-          "start_timestamp": "2026-08-24T08:04:09.683011+00:00",
-          "end_timestamp": "2026-08-24T08:04:09.687Z",
+          "start_timestamp": "2026-08-24T08:12:02.626099+00:00",
+          "end_timestamp": "",
           "type": "agent_generated",
           "tags": [],
           "html_paths": [],
@@ -1218,7 +1201,7 @@
           "network_assertion_content": {},
           "screenshot_command": "",
           "smartui_contents": {},
-          "generative_id": "212ebc1dd0764920a7c6c54d2017560f",
+          "generative_id": "4a5817e86be048e381cc8f92c3b0231b",
           "plan_id": "",
           "generative_objective": "Verify the page shows \"Cash: £3315.00\".\nVerify the page shows \"You hold: 2 NVDA\".",
           "error_message": "",
@@ -1229,7 +1212,7 @@
           "reasoning": ""
         },
         {
-          "instruction_id": "ec7e833b-4067-418d-ae38-780d1d58caa6",
+          "instruction_id": "f4851cd9-a2c6-4565-a440-2c241f7875ec",
           "instruction_class": "non_driver_action",
           "module_id": "",
           "instruction": "Assertion check",
@@ -1245,7 +1228,7 @@
                 "assertion_tree": {
                   "sub_results": [
                     {
-                      "description": "the page shows \"You hold: 2 NVDA\"",
+                      "description": "The page shows \"You hold: 2 NVDA\".",
                       "passed": true,
                       "operator": "equals",
                       "transforms": [
@@ -1253,19 +1236,19 @@
                       ],
                       "json_path": null,
                       "expected": "You hold: 2 NVDA",
-                      "extracted_value": "{{nvda_holdings_display_check}}",
-                      "store_key": "nvda_holdings_display_check",
+                      "extracted_value": "{{hold_2_nvda_display_check}}",
+                      "store_key": "hold_2_nvda_display_check",
                       "variable_refs": {
-                        "{{nvda_holdings_display_check}}": "You hold: 2 NVDA"
+                        "{{hold_2_nvda_display_check}}": "You hold: 2 NVDA"
                       }
                     }
                   ],
                   "sub_checks": [
                     {
-                      "description": "the page shows \"You hold: 2 NVDA\"",
-                      "store_key": "nvda_holdings_display_check",
+                      "description": "The page shows \"You hold: 2 NVDA\".",
+                      "store_key": "hold_2_nvda_display_check",
                       "expected_value": "You hold: 2 NVDA",
-                      "extracted_value": "{{nvda_holdings_display_check}}",
+                      "extracted_value": "{{hold_2_nvda_display_check}}",
                       "operator": "equals",
                       "transforms": [
                         "strip"
@@ -1274,7 +1257,7 @@
                   ],
                   "composite_operator": "and",
                   "verification": "",
-                  "claim": "the page shows \"You hold: 2 NVDA\"",
+                  "claim": "Verify the page shows \"You hold: 2 NVDA\".",
                   "operator": [],
                   "assertion_operands": [],
                   "left_operand": null,
@@ -1290,12 +1273,12 @@
           "classification_error": {},
           "operations": [
             {
-              "operation_id": "517a7260-c4ba-441e-b881-f5f4a8cc7360",
-              "instruction_id": "ec7e833b-4067-418d-ae38-780d1d58caa6",
+              "operation_id": "ce16f842-6264-4289-ad54-8ba257bde95d",
+              "instruction_id": "f4851cd9-a2c6-4565-a440-2c241f7875ec",
               "instruction": "Assertion check",
               "intent": "Assertion check",
-              "operation_start": "2026-08-24T08:04:09.860541+00:00",
-              "operation_end": "2026-08-24T08:04:09.864Z",
+              "operation_start": "2026-08-24T08:12:03.433426+00:00",
+              "operation_end": "",
               "status": "success",
               "command": "ASSERTION",
               "name": "",
@@ -1317,7 +1300,7 @@
               "update_time_stamp": "",
               "locator_variable": "",
               "locator_variable_name": "",
-              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/517a7260-c4ba-441e-b881-f5f4a8cc7360.webp",
+              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/ce16f842-6264-4289-ad54-8ba257bde95d.webp",
               "alternative_xpaths": [],
               "attribute": "",
               "value_description": "",
@@ -1325,7 +1308,7 @@
               "navigation_direction": "",
               "tagified_image_url": "",
               "query_variable_name": "",
-              "query_variable_value": "{'status': 'passed', 'composite_operator': 'and', 'sub_results': [{'description': 'the page shows \"You hold: 2 NVDA\"', 'passed': True, 'operator': 'equals', 'transforms': ['strip'], 'expected': 'You hold: 2 NVDA', 'extracted_value': 'You hold: 2 NVDA'}]}",
+              "query_variable_value": "",
               "query_variable_type": "",
               "expected_value": "",
               "queried_value": "",
@@ -1383,7 +1366,7 @@
                 "operands": [],
                 "sub_results": [
                   {
-                    "description": "the page shows \"You hold: 2 NVDA\"",
+                    "description": "The page shows \"You hold: 2 NVDA\".",
                     "passed": true,
                     "operator": "equals",
                     "transforms": [
@@ -1391,19 +1374,19 @@
                     ],
                     "json_path": null,
                     "expected": "You hold: 2 NVDA",
-                    "extracted_value": "{{nvda_holdings_display_check}}",
-                    "store_key": "nvda_holdings_display_check",
+                    "extracted_value": "{{hold_2_nvda_display_check}}",
+                    "store_key": "hold_2_nvda_display_check",
                     "variable_refs": {
-                      "{{nvda_holdings_display_check}}": "You hold: 2 NVDA"
+                      "{{hold_2_nvda_display_check}}": "You hold: 2 NVDA"
                     }
                   }
                 ],
                 "sub_checks": [
                   {
-                    "description": "the page shows \"You hold: 2 NVDA\"",
-                    "store_key": "nvda_holdings_display_check",
+                    "description": "The page shows \"You hold: 2 NVDA\".",
+                    "store_key": "hold_2_nvda_display_check",
                     "expected_value": "You hold: 2 NVDA",
-                    "extracted_value": "{{nvda_holdings_display_check}}",
+                    "extracted_value": "{{hold_2_nvda_display_check}}",
                     "operator": "equals",
                     "transforms": [
                       "strip"
@@ -1411,16 +1394,16 @@
                   }
                 ],
                 "composite_operator": "and",
-                "verification": "Look for the text \"You hold: 2 NVDA\" on the page.",
-                "claim": "the page shows \"You hold: 2 NVDA\""
+                "verification": "The page shows \"You hold: 2 NVDA\".",
+                "claim": "Verify the page shows \"You hold: 2 NVDA\"."
               },
               "assertion_tree": {
                 "assertion_id": "assert_cp_2",
                 "status": "passed",
-                "description": "the page shows \"You hold: 2 NVDA\"",
+                "description": "Verify the page shows \"You hold: 2 NVDA\".",
                 "sub_results": [
                   {
-                    "description": "the page shows \"You hold: 2 NVDA\"",
+                    "description": "The page shows \"You hold: 2 NVDA\".",
                     "passed": true,
                     "operator": "equals",
                     "transforms": [
@@ -1428,10 +1411,10 @@
                     ],
                     "json_path": null,
                     "expected": "You hold: 2 NVDA",
-                    "extracted_value": "{{nvda_holdings_display_check}}",
-                    "store_key": "nvda_holdings_display_check",
+                    "extracted_value": "{{hold_2_nvda_display_check}}",
+                    "store_key": "hold_2_nvda_display_check",
                     "variable_refs": {
-                      "{{nvda_holdings_display_check}}": "You hold: 2 NVDA"
+                      "{{hold_2_nvda_display_check}}": "You hold: 2 NVDA"
                     }
                   }
                 ],
@@ -1439,26 +1422,9 @@
                 "passed": true,
                 "step": 3,
                 "is_final": true,
-                "verification": "Look for the text \"You hold: 2 NVDA\" on the page.",
+                "verification": "The page shows \"You hold: 2 NVDA\".",
                 "error_message": null,
-                "duration_ms": 0,
-                "sub_checks": [
-                  {
-                    "description": "the page shows \"You hold: 2 NVDA\"",
-                    "passed": true,
-                    "operator": "equals",
-                    "transforms": [
-                      "strip"
-                    ],
-                    "json_path": null,
-                    "extracted_value": "{{nvda_holdings_display_check}}",
-                    "store_key": "nvda_holdings_display_check",
-                    "variable_refs": {
-                      "{{nvda_holdings_display_check}}": "You hold: 2 NVDA"
-                    },
-                    "expected_value": "You hold: 2 NVDA"
-                  }
-                ]
+                "duration_ms": 0
               },
               "assertion_tree_simplified": {},
               "network_throttle": {},
@@ -1492,8 +1458,8 @@
             }
           ],
           "status": "success",
-          "start_timestamp": "2026-08-24T08:04:09.860541+00:00",
-          "end_timestamp": "2026-08-24T08:04:09.864Z",
+          "start_timestamp": "2026-08-24T08:12:03.433426+00:00",
+          "end_timestamp": "",
           "type": "agent_generated",
           "tags": [],
           "html_paths": [],
@@ -1519,7 +1485,7 @@
           "network_assertion_content": {},
           "screenshot_command": "",
           "smartui_contents": {},
-          "generative_id": "212ebc1dd0764920a7c6c54d2017560f",
+          "generative_id": "4a5817e86be048e381cc8f92c3b0231b",
           "plan_id": "",
           "generative_objective": "Verify the page shows \"Cash: £3315.00\".\nVerify the page shows \"You hold: 2 NVDA\".",
           "error_message": "",
@@ -1532,20 +1498,25 @@
       ],
       "error_message": null,
       "error_code": null,
-      "result_code": 100,
+      "result_code": null,
       "bifurcation_context": [],
-      "approach_reason": [],
+      "approach_reason": [
+        "Reviewed the order page on localhost to confirm the requested account details were shown.",
+        "Verified that the page displayed \"Cash: £3315.00\".",
+        "Verified that the page displayed \"You hold: 2 NVDA\".",
+        "Finished on the order page with both requested values visible."
+      ],
       "one_liner": null
     },
     {
       "content_type": "generative_block",
-      "instruction_id": "generative_block_d30b7ec7cf044e758cc2484e1356f2dd",
-      "generative_id": "d30b7ec7cf044e758cc2484e1356f2dd",
+      "instruction_id": "generative_block_f42f490083c843fa82455281b08a0f24",
+      "generative_id": "f42f490083c843fa82455281b08a0f24",
       "objective": "Clear the \"Number of shares\" field and type \"10\".\nClick the \"Buy\" button.",
       "status": "success",
       "children": [
         {
-          "instruction_id": "504f8e21-6062-4b33-82b0-5f4987f47b5e",
+          "instruction_id": "42f2abf8-2a9b-4e78-b24c-62b5b1305e4b",
           "instruction_class": "driver_action",
           "module_id": "",
           "instruction": "Typing 10 into Number of shares field",
@@ -1556,12 +1527,12 @@
           "classification_error": {},
           "operations": [
             {
-              "operation_id": "fb4b3734-85a8-47d0-96a6-f5af9a2949ae",
-              "instruction_id": "504f8e21-6062-4b33-82b0-5f4987f47b5e",
+              "operation_id": "16737fde-d293-43bb-8be5-a16145e3802b",
+              "instruction_id": "42f2abf8-2a9b-4e78-b24c-62b5b1305e4b",
               "instruction": "Typing 10 into Number of shares field",
               "intent": "Typing 10 into Number of shares field",
-              "operation_start": "2026-08-24T08:04:10.263552+00:00",
-              "operation_end": "2026-08-24T08:04:10.454Z",
+              "operation_start": "2026-08-24T08:12:18.864263+00:00",
+              "operation_end": "2026-08-24T08:12:18.928Z",
               "status": "success",
               "command": "TYPE",
               "name": "",
@@ -1583,7 +1554,7 @@
               "update_time_stamp": "",
               "locator_variable": "",
               "locator_variable_name": "",
-              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/fb4b3734-85a8-47d0-96a6-f5af9a2949ae.webp",
+              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/16737fde-d293-43bb-8be5-a16145e3802b.webp",
               "alternative_xpaths": [],
               "attribute": "",
               "value_description": "",
@@ -1691,7 +1662,7 @@
                 "viewport_width": 1920,
                 "viewport_height": 993,
                 "scale_factor": null,
-                "raw_image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/fb4b3734-85a8-47d0-96a6-f5af9a2949ae.webp",
+                "raw_image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/16737fde-d293-43bb-8be5-a16145e3802b.webp",
                 "raw_image_sas_url": "",
                 "annotated_image_url": "",
                 "annotated_image_sas_url": ""
@@ -1700,8 +1671,8 @@
             }
           ],
           "status": "success",
-          "start_timestamp": "2026-08-24T08:04:10.263552+00:00",
-          "end_timestamp": "2026-08-24T08:04:10.454Z",
+          "start_timestamp": "2026-08-24T08:12:18.864263+00:00",
+          "end_timestamp": "2026-08-24T08:12:18.928Z",
           "type": "agent_generated",
           "tags": [],
           "html_paths": [],
@@ -1727,7 +1698,7 @@
           "network_assertion_content": {},
           "screenshot_command": "",
           "smartui_contents": {},
-          "generative_id": "d30b7ec7cf044e758cc2484e1356f2dd",
+          "generative_id": "f42f490083c843fa82455281b08a0f24",
           "plan_id": "",
           "generative_objective": "Clear the \"Number of shares\" field and type \"10\".\nClick the \"Buy\" button.",
           "error_message": "",
@@ -1738,10 +1709,10 @@
           "reasoning": "PRIMARY: Number of shares input; role=textbox; text=\"Number of shares\" | HINTS: container=order form below the Nvidia (NVDA) heading"
         },
         {
-          "instruction_id": "189a9853-ca7b-4fab-9dc4-98ae1553d83b",
+          "instruction_id": "e6fd32ca-8243-41ec-97a0-7ba10e8bf945",
           "instruction_class": "driver_action",
           "module_id": "",
-          "instruction": "Clicking Buy button",
+          "instruction": "Clicking the Buy button below the number of shares input",
           "command": "CLICK",
           "error": null,
           "parent_instruction_id": "",
@@ -1749,12 +1720,12 @@
           "classification_error": {},
           "operations": [
             {
-              "operation_id": "3432e868-5d4a-4eaf-b74a-a51eff358dd2",
-              "instruction_id": "189a9853-ca7b-4fab-9dc4-98ae1553d83b",
-              "instruction": "Clicking Buy button",
-              "intent": "Clicking Buy button",
-              "operation_start": "2026-08-24T08:04:11.222534+00:00",
-              "operation_end": "2026-08-24T08:04:11.340Z",
+              "operation_id": "899089d7-e65a-419f-bc7f-f9e0f3427879",
+              "instruction_id": "e6fd32ca-8243-41ec-97a0-7ba10e8bf945",
+              "instruction": "Clicking the Buy button below the number of shares input",
+              "intent": "Clicking the Buy button below the number of shares input",
+              "operation_start": "2026-08-24T08:12:28.294256+00:00",
+              "operation_end": "2026-08-24T08:12:28.374Z",
               "status": "success",
               "command": "CLICK",
               "name": "",
@@ -1765,7 +1736,7 @@
               "frame": "",
               "error_message": "",
               "code_snippet": "",
-              "sub_instruction_obj": "{\"operation\":\"Clicking Buy button\",\"agent\":\"Vision Agent\",\"operation_dict\":{\"operation_type\":\"CLICK\"},\"reasoning\":\"PRIMARY: Buy button; role=button; text=\\\"Buy\\\" | HINTS: position=below the Number of shares input; container=order form for Nvidia (NVDA)\",\"variable\":{},\"secrets\":{},\"params\":{}}",
+              "sub_instruction_obj": "{\"operation\":\"Clicking the Buy button below the number of shares input\",\"agent\":\"Vision Agent\",\"operation_dict\":{\"operation_type\":\"CLICK\"},\"reasoning\":\"PRIMARY: Buy button; role=button; text=\\\"Buy\\\" | HINTS: below the Number of shares input in the order form\",\"variable\":{},\"secrets\":{},\"params\":{}}",
               "test_id": "",
               "test_version": "",
               "action": "",
@@ -1776,7 +1747,7 @@
               "update_time_stamp": "",
               "locator_variable": "",
               "locator_variable_name": "",
-              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/3432e868-5d4a-4eaf-b74a-a51eff358dd2.webp",
+              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/899089d7-e65a-419f-bc7f-f9e0f3427879.webp",
               "alternative_xpaths": [],
               "attribute": "",
               "value_description": "",
@@ -1884,17 +1855,17 @@
                 "viewport_width": 1920,
                 "viewport_height": 993,
                 "scale_factor": null,
-                "raw_image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/3432e868-5d4a-4eaf-b74a-a51eff358dd2.webp",
+                "raw_image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/899089d7-e65a-419f-bc7f-f9e0f3427879.webp",
                 "raw_image_sas_url": "",
                 "annotated_image_url": "",
                 "annotated_image_sas_url": ""
               },
-              "reasoning": "PRIMARY: Buy button; role=button; text=\"Buy\" | HINTS: position=below the Number of shares input; container=order form for Nvidia (NVDA)"
+              "reasoning": "PRIMARY: Buy button; role=button; text=\"Buy\" | HINTS: below the Number of shares input in the order form"
             }
           ],
           "status": "success",
-          "start_timestamp": "2026-08-24T08:04:11.222534+00:00",
-          "end_timestamp": "2026-08-24T08:04:11.340Z",
+          "start_timestamp": "2026-08-24T08:12:28.294256+00:00",
+          "end_timestamp": "2026-08-24T08:12:28.374Z",
           "type": "agent_generated",
           "tags": [],
           "html_paths": [],
@@ -1920,7 +1891,7 @@
           "network_assertion_content": {},
           "screenshot_command": "",
           "smartui_contents": {},
-          "generative_id": "d30b7ec7cf044e758cc2484e1356f2dd",
+          "generative_id": "f42f490083c843fa82455281b08a0f24",
           "plan_id": "",
           "generative_objective": "Clear the \"Number of shares\" field and type \"10\".\nClick the \"Buy\" button.",
           "error_message": "",
@@ -1928,25 +1899,30 @@
           "reason": "",
           "title": "",
           "used_variables": [],
-          "reasoning": "PRIMARY: Buy button; role=button; text=\"Buy\" | HINTS: position=below the Number of shares input; container=order form for Nvidia (NVDA)"
+          "reasoning": "PRIMARY: Buy button; role=button; text=\"Buy\" | HINTS: below the Number of shares input in the order form"
         }
       ],
       "error_message": null,
       "error_code": null,
-      "result_code": 100,
+      "result_code": null,
       "bifurcation_context": [],
-      "approach_reason": [],
+      "approach_reason": [
+        "The request was to place a buy order by setting the number of shares to 10 and submitting it.",
+        "The Number of shares field was cleared and updated to 10.",
+        "The Buy button was clicked to submit the order.",
+        "The run finished on the order page at http://localhost:4321/order."
+      ],
       "one_liner": null
     },
     {
       "content_type": "generative_block",
-      "instruction_id": "generative_block_cd7416b9d87f4a52a3e4cf3b1ec356ee",
-      "generative_id": "cd7416b9d87f4a52a3e4cf3b1ec356ee",
+      "instruction_id": "generative_block_4c2e15b19ba146c8b328384ed2d7627f",
+      "generative_id": "4c2e15b19ba146c8b328384ed2d7627f",
       "objective": "Verify the page shows \"Not enough cash. This order costs £8425.00.\"",
       "status": "success",
       "children": [
         {
-          "instruction_id": "4ad31e2b-368f-4af4-bc5a-af3126eea0c9",
+          "instruction_id": "6bab318c-8e2a-4e79-b3e9-9a234030302a",
           "instruction_class": "driver_action",
           "module_id": "",
           "instruction": "Reading the insufficient cash message",
@@ -1957,11 +1933,11 @@
           "classification_error": {},
           "operations": [
             {
-              "operation_id": "9f6e5a44-afeb-45fe-af38-d3e6bead221b",
-              "instruction_id": "4ad31e2b-368f-4af4-bc5a-af3126eea0c9",
+              "operation_id": "4164c727-53c9-4428-9c8f-0a0a40157cd6",
+              "instruction_id": "6bab318c-8e2a-4e79-b3e9-9a234030302a",
               "instruction": "Reading the insufficient cash message",
               "intent": "Reading the insufficient cash message",
-              "operation_start": "2026-08-24T08:04:33.647971+00:00",
+              "operation_start": "2026-08-24T08:13:02.373151+00:00",
               "operation_end": "",
               "status": "success",
               "command": "TEXTUAL_ANALYZER",
@@ -1973,7 +1949,7 @@
               "frame": "",
               "error_message": "",
               "code_snippet": "",
-              "sub_instruction_obj": "{\"operation\":\"Reading the insufficient cash message\",\"agent\":\"Operation Agent\",\"operation_dict\":{\"operation_type\":\"TEXTUAL_ANALYZER\"},\"reasoning\":\"the insufficient cash message on the order page\",\"variable\":{},\"secrets\":{},\"params\":{},\"code_js\":\"el(9)?.textContent\",\"wrapped_js\":\"(els) => {\\n  const __m = {9: 0};\\n  const el = (i) => els[__m[i]];\\n  const __v = (el(9)?.textContent);\\n  return (typeof __v === 'boolean' ? String(__v) : __v);\\n}\",\"locators\":[\"internal:text=\\\"Not enough cash. This order costs £\\\"i\"],\"operator\":\"equals\",\"transforms\":[\"strip\"],\"query\":\"the insufficient cash message on the order page\",\"expected_value\":\"Not enough cash. This order costs £8425.00.\",\"needs_unit_conversion\":false,\"condition\":\"the page shows \\\"Not enough cash. This order costs £8425.00.\\\"\"}",
+              "sub_instruction_obj": "{\"operation\":\"Reading the insufficient cash message\",\"agent\":\"Operation Agent\",\"operation_dict\":{\"operation_type\":\"TEXTUAL_ANALYZER\"},\"reasoning\":\"the insufficient cash message shown on the order page\",\"variable\":{},\"secrets\":{},\"params\":{},\"code_js\":\"el(9)?.textContent\",\"wrapped_js\":\"(els) => {\\n  const __m = {9: 0};\\n  const el = (i) => els[__m[i]];\\n  const __v = (el(9)?.textContent);\\n  return (typeof __v === 'boolean' ? String(__v) : __v);\\n}\",\"locators\":[\"internal:text=\\\"Not enough cash. This order costs £\\\"i\"],\"operator\":\"equals\",\"transforms\":[\"strip\"],\"query\":\"the insufficient cash message shown on the order page\",\"expected_value\":\"Not enough cash. This order costs £8425.00.\",\"needs_unit_conversion\":false,\"condition\":\"the page shows \\\"Not enough cash. This order costs £8425.00.\\\"\"}",
               "test_id": "",
               "test_version": "",
               "action": "",
@@ -1984,7 +1960,7 @@
               "update_time_stamp": "",
               "locator_variable": "",
               "locator_variable_name": "",
-              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/9f6e5a44-afeb-45fe-af38-d3e6bead221b.webp",
+              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/4164c727-53c9-4428-9c8f-0a0a40157cd6.webp",
               "alternative_xpaths": [],
               "attribute": "",
               "value_description": "",
@@ -2074,11 +2050,11 @@
                 "not_enough_cash_message": "Not enough cash. This order costs £8425.00."
               },
               "visual_context": null,
-              "reasoning": "the insufficient cash message on the order page"
+              "reasoning": "the insufficient cash message shown on the order page"
             }
           ],
           "status": "success",
-          "start_timestamp": "2026-08-24T08:04:33.647971+00:00",
+          "start_timestamp": "2026-08-24T08:13:02.373151+00:00",
           "end_timestamp": "",
           "type": "agent_generated",
           "tags": [],
@@ -2105,7 +2081,7 @@
           "network_assertion_content": {},
           "screenshot_command": "",
           "smartui_contents": {},
-          "generative_id": "cd7416b9d87f4a52a3e4cf3b1ec356ee",
+          "generative_id": "4c2e15b19ba146c8b328384ed2d7627f",
           "plan_id": "",
           "generative_objective": "Verify the page shows \"Not enough cash. This order costs £8425.00.\"",
           "error_message": "",
@@ -2113,10 +2089,10 @@
           "reason": "",
           "title": "",
           "used_variables": [],
-          "reasoning": "the insufficient cash message on the order page"
+          "reasoning": "the insufficient cash message shown on the order page"
         },
         {
-          "instruction_id": "3d7793a5-4e09-4b9f-92a3-95dbdd664017",
+          "instruction_id": "6998562c-c9cd-4c62-8216-0c091e6bd8b2",
           "instruction_class": "non_driver_action",
           "module_id": "",
           "instruction": "Assertion check",
@@ -2177,11 +2153,11 @@
           "classification_error": {},
           "operations": [
             {
-              "operation_id": "85f34dec-fd43-46a4-beff-fa8d1d14cfb1",
-              "instruction_id": "3d7793a5-4e09-4b9f-92a3-95dbdd664017",
+              "operation_id": "b2f1093c-17ca-4e6a-9fc6-88490225c6cb",
+              "instruction_id": "6998562c-c9cd-4c62-8216-0c091e6bd8b2",
               "instruction": "Assertion check",
               "intent": "Assertion check",
-              "operation_start": "2026-08-24T08:04:34.945000+00:00",
+              "operation_start": "2026-08-24T08:13:03.077824+00:00",
               "operation_end": "",
               "status": "success",
               "command": "ASSERTION",
@@ -2204,7 +2180,7 @@
               "update_time_stamp": "",
               "locator_variable": "",
               "locator_variable_name": "",
-              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/85f34dec-fd43-46a4-beff-fa8d1d14cfb1.png",
+              "image_url": "https://prodauteurartefacts.blob.core.windows.net/test-screenshots/test_screenshots/untagged_screenshot/b2f1093c-17ca-4e6a-9fc6-88490225c6cb.webp",
               "alternative_xpaths": [],
               "attribute": "",
               "value_description": "",
@@ -2362,7 +2338,7 @@
             }
           ],
           "status": "success",
-          "start_timestamp": "2026-08-24T08:04:34.945000+00:00",
+          "start_timestamp": "2026-08-24T08:13:03.077824+00:00",
           "end_timestamp": "",
           "type": "agent_generated",
           "tags": [],
@@ -2389,7 +2365,7 @@
           "network_assertion_content": {},
           "screenshot_command": "",
           "smartui_contents": {},
-          "generative_id": "cd7416b9d87f4a52a3e4cf3b1ec356ee",
+          "generative_id": "4c2e15b19ba146c8b328384ed2d7627f",
           "plan_id": "",
           "generative_objective": "Verify the page shows \"Not enough cash. This order costs £8425.00.\"",
           "error_message": "",
@@ -2405,9 +2381,10 @@
       "result_code": null,
       "bifurcation_context": [],
       "approach_reason": [
-        "Checked the order page for the requested insufficient funds message.",
+        "Opened the order page on localhost.",
+        "Checked the message shown on the page about payment for the order.",
         "Confirmed that the page displayed: \"Not enough cash. This order costs £8425.00.\"",
-        "Finished on the order page with the expected warning shown."
+        "The run finished successfully on the order page."
       ],
       "one_liner": null
     }
@@ -2415,7 +2392,7 @@
   "modules": [],
   "uploaded_files": [],
   "test_params": [],
-  "test_level_variables": "[{\"name\":\"nvda_holdings_display_check\",\"value\":\"You hold: 2 NVDA\",\"value_type\":\"test_level\",\"variable_description\":\"ANALYZE result\"},{\"name\":\"cash_3315_display_check\",\"value\":\"Cash: £3315.00\",\"value_type\":\"test_level\",\"variable_description\":\"ANALYZE result\"},{\"name\":\"not_enough_cash_message\",\"value\":\"Not enough cash. This order costs £8425.00.\",\"value_type\":\"test_level\",\"variable_description\":\"ANALYZE result\"}]",
+  "test_level_variables": "[{\"name\":\"hold_2_nvda_display_check\",\"value\":\"You hold: 2 NVDA\",\"value_type\":\"test_level\",\"variable_description\":\"ANALYZE result\"},{\"name\":\"cash_3315_display_check\",\"value\":\"Cash: £3315.00\",\"value_type\":\"test_level\",\"variable_description\":\"ANALYZE result\"},{\"name\":\"not_enough_cash_message\",\"value\":\"Not enough cash. This order costs £8425.00.\",\"value_type\":\"test_level\",\"variable_description\":\"ANALYZE result\"}]",
   "test_global_variables": [],
   "max_network_wait": 0,
   "wait_buffer": 0,
