@@ -8,7 +8,7 @@
    "passed": true,
    "failed": 0,
    "total": 4,
-   "durationS": 9,
+   "durationS": 118,
    "healed": false,
    "suspectGreen": false
   }
@@ -26,8 +26,8 @@
      "passed": false,
      "failed": 1,
      "total": 4,
-     "durationS": 99,
-     "healed": true,
+     "durationS": 116,
+     "healed": false,
      "suspectGreen": false
     }
    }
@@ -42,7 +42,7 @@
      "passed": true,
      "failed": 0,
      "total": 4,
-     "durationS": 33,
+     "durationS": 53,
      "healed": false,
      "suspectGreen": false
     }
@@ -60,8 +60,8 @@
      "passed": false,
      "failed": 1,
      "total": 4,
-     "durationS": 124,
-     "healed": true,
+     "durationS": 70,
+     "healed": false,
      "suspectGreen": false
     }
    }
@@ -76,7 +76,7 @@
      "passed": true,
      "failed": 0,
      "total": 4,
-     "durationS": 96,
+     "durationS": 14,
      "healed": false,
      "suspectGreen": false
     }
@@ -92,7 +92,7 @@
      "passed": true,
      "failed": 0,
      "total": 4,
-     "durationS": 13,
+     "durationS": 16,
      "healed": false,
      "suspectGreen": false
     }
@@ -108,7 +108,7 @@
      "passed": true,
      "failed": 0,
      "total": 4,
-     "durationS": 7,
+     "durationS": 12,
      "healed": false,
      "suspectGreen": false
     }

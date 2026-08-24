@@ -117,6 +117,20 @@ per-step counts that the scorer needs.
 
 ---
 
+## Run it
+
+```bash
+git clone https://github.com/imprint-hash/pyra && cd pyra
+node src/cli.js sweep
+```
+
+Kane replays the flow against each of six injected faults and writes
+`reports/alarm.html`. Takes about three minutes — most of it is Chrome
+starting once per fault.
+
+To see just the app, without Kane: `node app/server.js` → localhost:4321.
+Buy two shares of NVDA, then try to buy 999 and watch it refuse.
+
 ## Running it
 
 Requires Node 18+, Chrome, and a logged-in `kane-cli`.
