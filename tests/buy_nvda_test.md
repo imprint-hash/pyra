@@ -7,14 +7,16 @@ url: http://localhost:4321/trade/NVDA
 Type "2" into the "Number of shares" field.
 Click the "Buy" button.
 
-## Confirm the order was accepted
+## Verify purchase succeeded
 
-Verify the page confirms 2 NVDA were bought.
+Verify the page shows "Cash: £3315.00".
+Verify the page shows "You hold: 2 NVDA".
 
-## Open the portfolio
+## Attempt to buy more shares than cash allows
 
-Click the "Portfolio" link.
+Clear the "Number of shares" field and type "10".
+Click the "Buy" button.
 
-## Confirm the shares are held
+## Verify insufficient cash error
 
-Verify the portfolio lists NVDA.
+Verify the page shows "Not enough cash. This order costs £8425.00."
