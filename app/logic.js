@@ -45,7 +45,7 @@ export function orderTotal(price, quantity) {
 
 /** You cannot spend money you do not have. */
 export function canAfford(cashPence, totalPence) {
-  return true; // mutated: balance check removed
+  return totalPence <= cashPence;
 }
 
 /** You cannot sell shares you do not hold. */

@@ -32,9 +32,17 @@ async function writeReport(result, tests) {
 }
 
 function printScore({ score }) {
+  if (!score.scorable) {
+    console.log(`\n${c.red}No score: no flow was green on a healthy app.${c.off}`);
+    console.log(`${c.dim}Fix the flows first — nothing can go red that was already red.${c.off}\n`);
+    return;
+  }
   const tone = score.alarmScore >= 80 ? c.green : c.red;
   console.log(`\n${c.bold}Alarm score: ${tone}${score.alarmScore}/100${c.off}` +
     `${c.dim}  (${score.caught} of ${score.mutations} faults noticed)${c.off}`);
+  if (score.errored) {
+    console.log(`${c.red}${score.errored} fault(s) could not be tested — a flow errored rather than ran.${c.off}`);
+  }
   console.log(`${c.dim}Report: reports/alarm.html${c.off}\n`);
 }
 

@@ -19,7 +19,8 @@ const VERDICT = {
 
 export function renderReport(result, { appName = "the app", testCount = 1 } = {}) {
   const { score, grid, baseline } = result;
-  const tone = score.alarmScore >= 80 ? "good" : score.alarmScore >= 40 ? "warn" : "bad";
+  const shown = score.alarmScore ?? 0;
+  const tone = shown >= 80 ? "good" : score.alarmScore >= 40 ? "warn" : "bad";
 
   const rows = grid.map((g) => {
     const v = VERDICT[g.caught ? "caught" : "survived"];
@@ -74,7 +75,7 @@ export function renderReport(result, { appName = "the app", testCount = 1 } = {}
   ${score.mutations} deliberate faults</p>
 
 <div class="score">
-  <div class="big ${tone}">${score.alarmScore}<span style="font-size:.4em;font-weight:600">/100</span></div>
+  <div class="big ${tone}">${score.scorable === false ? "—" : shown}<span style="font-size:.4em;font-weight:600">/100</span></div>
   <p>
     <span class="headline">${score.caught} of ${score.mutations} faults were noticed.</span>
     ${survivors.length

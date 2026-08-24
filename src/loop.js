@@ -178,13 +178,28 @@ function cleanTest(text) {
   return t + "\n";
 }
 
-/** Author once (so replays have a recording), then replay. */
+/**
+ * Author once (so replays have a recording), then replay.
+ *
+ * A failed authoring run is fatal rather than ignored: the recording on disk
+ * would still be the *previous* version of the test, so the replay that
+ * follows would judge the old assertions and report a verdict about a rewrite
+ * that never ran.
+ */
 async function authorAndReplay(testPath) {
   await new Promise((resolve, reject) => {
     const child = spawn("kane-cli", ["testmd", "run", testPath, "--headless", "--timeout", "480", "--agent"],
       { stdio: ["ignore", "ignore", "pipe"] });
+    let err = "";
+    child.stderr.on("data", (b) => (err += b));
     child.on("error", reject);
-    child.on("close", () => resolve());
+    child.on("close", (code) => {
+      // Authoring exits non-zero when the rewritten test fails, which is
+      // expected here — it is being authored against a broken app. Only a
+      // crash, where nothing was written, is fatal.
+      if (code === null) return reject(new Error(`authoring was killed: ${err.slice(0, 200)}`));
+      resolve();
+    });
   });
   return replay(testPath);
 }

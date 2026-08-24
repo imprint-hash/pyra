@@ -62,7 +62,13 @@ async function replayAll(tests) {
   const results = {};
   for (const t of tests) {
     try { results[t] = await replay(t); }
-    catch (e) { results[t] = { passed: false, error: e.message, total: 0, failed: 0 }; }
+    catch (e) {
+      // `errored` is not `failed`. A flow that could not run — no credits, no
+      // network, Chrome missing — tells us nothing about whether it would have
+      // noticed the fault. Counting it as a catch would let an unusable
+      // installation score 100/100, which is the most flattering possible lie.
+      results[t] = { passed: false, errored: true, error: e.message, total: 0, failed: 0 };
+    }
   }
   return results;
 }
@@ -91,12 +97,15 @@ export async function sweep(tests, { mutations = MUTATIONS, onEvent = () => {} }
       return r;
     });
 
-    const caughtBy = usable.filter((t) => !row[t].passed);
+    // Only a flow that ran and went red has caught anything.
+    const caughtBy = usable.filter((t) => !row[t].passed && !row[t].errored);
+    const errored = usable.filter((t) => row[t].errored);
     const result = {
       id: m.id,
       describes: m.describes,
       caught: caughtBy.length > 0,
       caughtBy,
+      errored,
       perTest: row,
     };
     grid.push(result);
@@ -104,6 +113,8 @@ export async function sweep(tests, { mutations = MUTATIONS, onEvent = () => {} }
   }
 
   const caught = grid.filter((g) => g.caught).length;
+  const errored = grid.filter((g) => g.errored.length).length;
+
   return {
     tests: usable,
     excluded: broken,
@@ -113,8 +124,12 @@ export async function sweep(tests, { mutations = MUTATIONS, onEvent = () => {} }
       mutations: grid.length,
       caught,
       survived: grid.length - caught,
-      // The share of real bugs this suite would actually notice.
-      alarmScore: grid.length ? Math.round((caught / grid.length) * 100) : 0,
+      errored,
+      // A score needs a flow that was green to begin with. With none, nothing
+      // could go red, and reporting 0/100 would blame the tests for what is
+      // actually a broken setup.
+      scorable: usable.length > 0 && grid.length > 0,
+      alarmScore: usable.length && grid.length ? Math.round((caught / grid.length) * 100) : null,
     },
   };
 }

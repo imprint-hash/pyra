@@ -216,13 +216,39 @@ the rules can emit before writing a single assertion.
 
 ## Honest limits
 
+I read the whole thing back before submitting. Three real bugs came out of
+that, all now fixed, and they are worth naming because each one made the
+score say something untrue:
+
+- **A crashed run used to count as a catch.** Any flow that failed was treated
+  as having noticed the fault — including one that never ran because credits
+  ran out, Chrome was missing, or the network dropped. An unusable install
+  would have scored 100/100, the most flattering possible lie. Errors are now
+  tracked apart from failures and reported separately.
+- **A suite with no green baseline used to score 0/100.** If every flow was
+  already red, nothing could turn red, and the report blamed the tests for what
+  was really a broken setup. It now refuses to score.
+- **A failed re-author used to be ignored during repair.** The recording on
+  disk would still be the previous version of the test, so the replay judged
+  old assertions and reported a verdict about a rewrite that never ran.
+
+What remains true and unfixed:
+
 - **One app, six faults, hand-written.** Deriving faults from arbitrary source
   is the obvious next step, not a shipped feature.
-- **A score of 100 does not mean the app is correct.** It means the flows
-  notice *these six* faults.
+- **A score of 100 would not mean the app is correct.** It means the flows
+  notice *these six* faults. Mutation scores measure a suite against the faults
+  you thought of.
 - **Repairs are bounded at three attempts** and rolled back on failure, so a
-  hard fault can simply stay unfixed.
-- **Unaudited hackathon code.** It rewrites files in your repository.
+  hard fault simply stays unfixed — as four of six do here.
+- **The session cookie on the live demo is signed with a default secret.** It
+  is a paper-trading toy with no real money, but anyone reading this repo could
+  forge an account on it.
+- **It rewrites files in your repository** — `app/logic.js` during a sweep, and
+  your `_test.md` during a repair. Both are restored on failure, and a backup
+  survives a `SIGKILL`, but run it on a clean working tree.
+- **Still unaudited by anyone but me.** The above is what one careful read
+  found, not a guarantee that it was the last thing to find.
 
 ## Licence
 

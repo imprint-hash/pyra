@@ -8,7 +8,7 @@
    "passed": true,
    "failed": 0,
    "total": 4,
-   "durationS": 118,
+   "durationS": 34,
    "healed": false,
    "suspectGreen": false
   }
@@ -21,12 +21,13 @@
    "caughtBy": [
     "tests/buy_nvda_test.md"
    ],
+   "errored": [],
    "perTest": {
     "tests/buy_nvda_test.md": {
      "passed": false,
      "failed": 1,
      "total": 4,
-     "durationS": 116,
+     "durationS": 26,
      "healed": false,
      "suspectGreen": false
     }
@@ -37,12 +38,13 @@
    "describes": "You can sell shares you never owned.",
    "caught": false,
    "caughtBy": [],
+   "errored": [],
    "perTest": {
     "tests/buy_nvda_test.md": {
      "passed": true,
      "failed": 0,
      "total": 4,
-     "durationS": 53,
+     "durationS": 9,
      "healed": false,
      "suspectGreen": false
     }
@@ -55,12 +57,13 @@
    "caughtBy": [
     "tests/buy_nvda_test.md"
    ],
+   "errored": [],
    "perTest": {
     "tests/buy_nvda_test.md": {
      "passed": false,
      "failed": 1,
      "total": 4,
-     "durationS": 70,
+     "durationS": 47,
      "healed": false,
      "suspectGreen": false
     }
@@ -71,12 +74,13 @@
    "describes": "You can order minus fifty shares.",
    "caught": false,
    "caughtBy": [],
+   "errored": [],
    "perTest": {
     "tests/buy_nvda_test.md": {
      "passed": true,
      "failed": 0,
      "total": 4,
-     "durationS": 14,
+     "durationS": 40,
      "healed": false,
      "suspectGreen": false
     }
@@ -87,12 +91,13 @@
    "describes": "You can order 2.5 shares of a whole-share instrument.",
    "caught": false,
    "caughtBy": [],
+   "errored": [],
    "perTest": {
     "tests/buy_nvda_test.md": {
      "passed": true,
      "failed": 0,
      "total": 4,
-     "durationS": 16,
+     "durationS": 23,
      "healed": false,
      "suspectGreen": false
     }
@@ -103,12 +108,13 @@
    "describes": "Orders fill at a price that expired long ago.",
    "caught": false,
    "caughtBy": [],
+   "errored": [],
    "perTest": {
     "tests/buy_nvda_test.md": {
      "passed": true,
      "failed": 0,
      "total": 4,
-     "durationS": 12,
+     "durationS": 10,
      "healed": false,
      "suspectGreen": false
     }
@@ -119,6 +125,8 @@
   "mutations": 6,
   "caught": 2,
   "survived": 4,
+  "errored": 0,
+  "scorable": true,
   "alarmScore": 33
  }
 }
